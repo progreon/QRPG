@@ -27,3 +27,14 @@ DEPENDPATH += $$PWD/../QRPGDatabase
 
 unix:!macx:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../build-QRPGDatabase-Desktop_Qt_5_4_1_GCC_64bit-Release/libQRPGDatabase.a
 else:unix:!macx:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../build-QRPGDatabase-Desktop_Qt_5_4_1_GCC_64bit-Debug/libQRPGDatabase.a
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../build-QRPGDatabase-Desktop_Qt_5_4_1_MinGW_32bit/release/ -lQRPGDatabase
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-QRPGDatabase-Desktop_Qt_5_4_1_MinGW_32bit/debug/ -lQRPGDatabase
+
+INCLUDEPATH += $$PWD/../QRPGDatabase
+DEPENDPATH += $$PWD/../QRPGDatabase
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../build-QRPGDatabase-Desktop_Qt_5_4_1_MinGW_32bit/release/libQRPGDatabase.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../build-QRPGDatabase-Desktop_Qt_5_4_1_MinGW_32bit/debug/libQRPGDatabase.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../build-QRPGDatabase-Desktop_Qt_5_4_1_MinGW_32bit/release/QRPGDatabase.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../build-QRPGDatabase-Desktop_Qt_5_4_1_MinGW_32bit/debug/QRPGDatabase.lib
