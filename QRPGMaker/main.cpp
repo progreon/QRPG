@@ -2,8 +2,8 @@
 #include <QApplication>
 
 #include "qrpgdatabase.h"
-#include <iostream>
 #include <assert.h>
+#include <QDebug>
 
 int main(int argc, char *argv[])
 {
@@ -11,8 +11,8 @@ int main(int argc, char *argv[])
 
     QRPGDao::QRPGDatabase *dao = QRPGDao::newDao(QRPGDao::FILE);
     assert(dao != NULL);
-    std::cout << dao->getInfo().toStdString() << std::endl;
-    MainWindow w;
+    qDebug() << dao->getInfo();
+    MainWindow w(dao);
     w.show();
 
     return a.exec();

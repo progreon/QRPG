@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "qrpgdatabase.h"
 
 namespace Ui {
 class MainWindow;
@@ -12,11 +13,15 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QRPGDao::QRPGDatabase *dao, QWidget *parent = 0);
     ~MainWindow();
+
+private slots:
+    void on_action_New_project_triggered();
 
 private:
     Ui::MainWindow *ui;
+    QRPGDao::QRPGDatabase *dao;
 };
 
 #endif // MAINWINDOW_H

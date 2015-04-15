@@ -19,9 +19,9 @@ private:
 
     // QRPGDatabase interface
 public:
-    QRPGDao::QRPGProject *createNewProject(QString projectFolderURI, QString projectTitle, QString gameTitle);
-    QRPGDao::QRPGProject *openProjectFolder(QString projectFolderURI);
-    void closeProject(QString projectFolderURI);
+    QRPGDao::QRPGProject *createNewProject(const QDir &projectLocationDir, QString projectTitle, QString gameTitle);
+    QRPGDao::QRPGProject *openProjectDir(QString projectDirURI);
+    void closeProject(QString projectDirURI);
     QString getInfo() const;
 };
 

@@ -16,9 +16,9 @@ QRPGDatabase *newDao(DaoType daoType)
     return NULL;
 }
 
-QRPGProject *QRPGDatabase::newProject(QString projectFolderURI, QString projectTitle, QString gameTitle)
+QRPGProject *QRPGDatabase::newProject(QString projectDirURI, QString projectTitle, QString gameTitle)
 {
-    return new QRPGProject(this, projectFolderURI, projectTitle, gameTitle);
+    return new QRPGProject(this, projectDirURI, projectTitle, gameTitle);
 }
 
 } // namespace QRPGDao
