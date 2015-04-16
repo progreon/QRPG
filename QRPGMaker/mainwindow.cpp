@@ -30,8 +30,8 @@ void MainWindow::on_action_New_project_triggered()
         qDebug() << fileName;
         QDir dir(fileName);
         if (dir.exists()) {
-            QString projTitle = "TestProject";
-            QString gameTitle = "TestGame";
+            QString projTitle = "Test Project";
+            QString gameTitle = "Test Game";
             QRPGDao::QRPGProject *proj = dao->createNewProject(dir, projTitle, gameTitle);
             if (proj != NULL) {
                 qDebug() << proj->getProjectFolderURI();

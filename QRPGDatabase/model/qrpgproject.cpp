@@ -13,5 +13,16 @@ QRPGProject::~QRPGProject()
 
 }
 
+void QRPGProject::setProjectTitle(QString projectTitle)
+{
+    // TODO
+    this->_projectTitle = projectTitle;
+}
+
+void QRPGProject::setGameTitle(QString gameTitle)
+{
+    this->_gameTitle = gameTitle;
+}
+
 } // namespace QRPGDao
 

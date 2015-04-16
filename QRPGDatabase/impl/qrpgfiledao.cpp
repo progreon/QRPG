@@ -32,8 +32,14 @@ QRPGProject *QRPGFileDao::createNewProject(const QDir &projectLocationDir, QStri
             assert(projectDir.cd(projectTitle));
             qDebug() << "Project directory: " << projectDir.absolutePath();
 
-            // Creating subdirectories
+            // Create project file
+            QFile projectFile(projectDir.absolutePath().append(QDir::separator()).append(projectTitle).append(".qrpg"));
+            projectFile.open(QIODevice::ReadWrite);
+//            projectFile.write("test");
+            projectFile.close();
 
+            // Creating subdirectories
+            projectDir.mkdir("Maps");
             // Done creating subdirectories
 
             QString projectFolderURI = projectDir.absolutePath();
@@ -48,27 +54,6 @@ QRPGProject *QRPGFileDao::createNewProject(const QDir &projectLocationDir, QStri
         qWarning() << "The directory you're trying to create the project in does not exist: " << projectLocationDir.absolutePath();
         return NULL;
     }
-
-//    QDir projectDir(projectFolderURI); // Used to create subfolders!
-//    if (!projectDir.exists()) {
-//        projectDir.mkpath(".");
-//        if (projectDir.exists()) {
-//            // Creating subfolders
-//            QFile file(projectDir.absolutePath().append(QDir::separator()).append(gameTitle).append(".qrpg"));
-//            file.open(QIODevice::ReadWrite);
-//            file.close();
-//            // Done creating subfolders
-//            QRPGProject *proj = this->newProject(projectFolderURI, projectTitle, gameTitle);
-//            openProjects.insert(projectFolderURI, proj);
-//            return proj;
-//        } else {
-//            qDebug() << "Could not create project folder!";
-//            return NULL;
-//        }
-//    } else {
-//        qDebug() << "The project folder you wish to create already exists!";
-//    }
-//    return NULL;
 }
 
 QRPGProject *QRPGFileDao::openProjectDir(QString projectDirURI)

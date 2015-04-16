@@ -9,11 +9,10 @@ namespace QRPGDao {
 class QRPGProject
 {
     friend class QRPGDatabase;
-//    friend QRPGProject *Impl::QRPGDummyDao::createNewProject(QString, QString, QString);
+//    friend QRPGProject *QRPGDatabase::createNewProject(const QDir&, QString, QString);
 public:
     ~QRPGProject();
-    QString getProjectFolderURI() const {return _projectFolderURI;} // Kept in this class?
-    void setProjectFolderURI(QString projectFolderURI); // Kept in this class?
+    QString getProjectFolderURI() const {return _projectFolderURI;}
     QString getProjectTitle() const {return _projectTitle;}
     void setProjectTitle(QString projectTitle);
     QString getGameTitle() const {return _gameTitle;}
@@ -24,7 +23,7 @@ private:
     QRPGProject(QRPGDatabase *dao, QString projectFolderURI, QString projectTitle, QString gameTitle);
 
     const QRPGDatabase *_dao; /*!< The dao used in the application, do NOT delete this pointer!*/
-    QString _projectFolderURI; // Kept in this class?
+    QString _projectFolderURI;
     QString _projectTitle;
     QString _gameTitle;
 };
