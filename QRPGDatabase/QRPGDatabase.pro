@@ -13,12 +13,16 @@ CONFIG += staticlib
 SOURCES += qrpgdatabase.cpp \
     impl/qrpgdummydao.cpp \
     impl/qrpgfiledao.cpp \
-    model/qrpgproject.cpp
+    model/qrpgproject.cpp \
+    model/qrpgmap.cpp \
+    model/qrpgtile.cpp
 
 HEADERS += qrpgdatabase.h \
     impl/qrpgdummydao.h \
     impl/qrpgfiledao.h \
-    model/qrpgproject.h
+    model/qrpgproject.h \
+    model/qrpgmap.h \
+    model/qrpgtile.h
 unix {
     target.path = /usr/lib
     INSTALLS += target
