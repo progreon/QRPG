@@ -1,11 +1,11 @@
 #include "battles/battlescene.h"
 
-BattleScene::BattleScene()
+QRPG::BattleScene::BattleScene()
 {
 
 }
 
-BattleScene::~BattleScene()
+QRPG::BattleScene::~BattleScene()
 {
 
 }

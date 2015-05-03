@@ -1,11 +1,11 @@
 #include "mapfactory.h"
 
-MapFactory::MapFactory()
+QRPG::MapFactory::MapFactory()
 {
 
 }
 
-MapFactory::~MapFactory()
+QRPG::MapFactory::~MapFactory()
 {
 
 }

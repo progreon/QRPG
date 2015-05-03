@@ -3,8 +3,8 @@
 
 #include <QMainWindow>
 #include <QThread>
-#include "game.h"
-#include "screen.h"
+#include "qrpggame.h"
+#include "qrpgscreen.h"
 
 namespace Ui {
 class MainWindow;
@@ -20,8 +20,8 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    Screen *screen;
-    Game *game;
+    QRPG::Screen *screen;
+    QRPG::Game *game;
     QThread gameThread;
 
     // QWidget interface

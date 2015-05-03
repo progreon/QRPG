@@ -7,7 +7,9 @@
 #include <QRect>
 #include <QPointF>
 #include <QPoint>
-#include "scene.h"
+#include "qrpgscene.h"
+
+namespace QRPG {
 
 class Screen : public QWidget
 {
@@ -44,5 +46,7 @@ protected:
     void resizeEvent(QResizeEvent *re);
     void paintEvent(QPaintEvent *);
 };
+
+}
 
 #endif // SCREEN_H

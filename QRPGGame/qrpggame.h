@@ -1,13 +1,15 @@
-#ifndef GAME_H
-#define GAME_H
+#ifndef QRPGGAME_H
+#define QRPGGAME_H
 
 #include <QObject>
 #include <QThread>
 #include <QMutex>
 #include <QMap>
-#include "screen.h"
-#include "scene.h"
-#include "maps/map.h"
+#include "qrpgscreen.h"
+#include "qrpgscene.h"
+#include "maps/mapscene.h"
+
+namespace QRPG {
 
 class Game : public QObject
 {
@@ -43,4 +45,6 @@ private:
     void tick();
 };
 
-#endif // GAME_H
+}
+
+#endif // QRPGGAME_H

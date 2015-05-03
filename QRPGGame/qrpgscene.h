@@ -10,6 +10,8 @@
 #include <QVector>
 #include "graphicsitem.h"
 
+namespace QRPG {
+
 class Scene : public QObject
 {
     Q_OBJECT
@@ -43,5 +45,7 @@ private:
     // TODO: needs optimisation?
     bool itemIsInRect(const QRectF &rect, const GraphicsItem *item) const;
 };
+
+}
 
 #endif // SCENE_H

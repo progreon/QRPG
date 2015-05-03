@@ -1,7 +1,9 @@
-#ifndef BATTLESCENE_H
-#define BATTLESCENE_H
+#ifndef QRPG_BATTLESCENE_H
+#define QRPG_BATTLESCENE_H
 
-#include "../scene.h"
+#include "../qrpgscene.h"
+
+namespace QRPG {
 
 class BattleScene : public Scene
 {
@@ -10,4 +12,6 @@ public:
     ~BattleScene();
 };
 
-#endif // BATTLESCENE_H
+}
+
+#endif // QRPG_BATTLESCENE_H

@@ -9,8 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->mainToolBar->hide();
     ui->statusBar->hide();
-    screen = new Screen(this);
-    game = new Game(screen);
+    screen = new QRPG::Screen(this);
+    game = new QRPG::Game(screen);
     this->setCentralWidget(screen);
     connect(game, SIGNAL(render()), screen, SLOT(doRender()));
     game->setupThread(&gameThread);
@@ -21,8 +21,8 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete game;
 }
-
 
 void MainWindow::keyPressEvent(QKeyEvent *ke)
 {
@@ -38,7 +38,6 @@ void MainWindow::on_action_Stop_triggered()
 {
     game->stop();
 }
-
 
 void MainWindow::closeEvent(QCloseEvent *)
 {

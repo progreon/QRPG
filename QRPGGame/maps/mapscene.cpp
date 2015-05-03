@@ -1,6 +1,6 @@
-#include "map.h"
+#include "mapscene.h"
 
-Map::Map(int width, int height, QObject *parent) : Scene(parent), width(width), height(height)
+QRPG::Map::Map(int width, int height, QObject *parent) : Scene(parent), width(width), height(height)
 {
     const int numColors = 4;
     tiles.resize(width);
@@ -15,7 +15,7 @@ Map::Map(int width, int height, QObject *parent) : Scene(parent), width(width), 
     ticksPassed = 0;
 }
 
-Map::~Map()
+QRPG::Map::~Map()
 {
     for (int i = 0; i < tiles.length(); i++) {
         for (int j = 0; j < tiles[i].length(); j++) {
@@ -24,7 +24,7 @@ Map::~Map()
     }
 }
 
-Tile *Map::getTile(int x, int y) const
+QRPG::Tile *QRPG::Map::getTile(int x, int y) const
 {
     if (x >= 0 && x < width && y >= 0 && y < height) {
         return tiles[x][y];
@@ -33,7 +33,7 @@ Tile *Map::getTile(int x, int y) const
     }
 }
 
-void Map::doTick()
+void QRPG::Map::doTick()
 {
     ticksPassed++;
     if (ticksPassed >= 2) {

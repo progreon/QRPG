@@ -1,18 +1,18 @@
-#include "scene.h"
+#include "qrpgscene.h"
 #include <QPainter>
 #include <QDebug>
 
-Scene::Scene(QObject *parent) : QObject(parent)
+QRPG::Scene::Scene(QObject *parent) : QObject(parent)
 {
 
 }
 
-Scene::~Scene()
+QRPG::Scene::~Scene()
 {
 
 }
 
-void Scene::render(QPixmap *screen, const QPointF &pos) const
+void QRPG::Scene::render(QPixmap *screen, const QPointF &pos) const
 {
     QRectF screenRect(pos.x(), pos.y(), screen->rect().width(), screen->rect().height());
     if (!screen->isNull()) {
@@ -30,7 +30,7 @@ void Scene::render(QPixmap *screen, const QPointF &pos) const
     }
 }
 
-bool Scene::addGraphicsItem(GraphicsItem *item, int layer)
+bool QRPG::Scene::addGraphicsItem(GraphicsItem *item, int layer)
 {
     bool exists = false;
     foreach (QSet<GraphicsItem *> set, itemsPerLayer) {
@@ -48,7 +48,7 @@ bool Scene::addGraphicsItem(GraphicsItem *item, int layer)
     return !exists;
 }
 
-void Scene::doTick()
+void QRPG::Scene::doTick()
 {
     foreach (QSet<GraphicsItem *> set, itemsPerLayer) {
         foreach (GraphicsItem *item, set) {
@@ -57,7 +57,7 @@ void Scene::doTick()
     }
 }
 
-bool Scene::itemIsInRect(const QRectF &rect, const GraphicsItem *item) const
+bool QRPG::Scene::itemIsInRect(const QRectF &rect, const GraphicsItem *item) const
 {
     QRectF itemRect(item->pos(), QSizeF(item->boundingRect().width(), item->boundingRect().height()));
     return rect.intersects(itemRect);

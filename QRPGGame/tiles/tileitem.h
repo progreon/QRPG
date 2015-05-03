@@ -1,9 +1,11 @@
-#ifndef TILE_H
-#define TILE_H
+#ifndef QRPG_TILEITEM_H
+#define QRPG_TILEITEM_H
 
 #include "../graphicsitem.h"
 #include <QPixmap>
 #include <QImage>
+
+namespace QRPG {
 
 enum TileType {
     VOID,
@@ -45,4 +47,6 @@ public slots:
     virtual void doTick();
 };
 
-#endif // TILE_H
+}
+
+#endif // QRPG_TILEITEM_H

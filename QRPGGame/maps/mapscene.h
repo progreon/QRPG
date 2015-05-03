@@ -1,9 +1,11 @@
-#ifndef MAP_H
-#define MAP_H
+#ifndef QRPG_MAPSCENE_H
+#define QRPG_MAPSCENE_H
 
 #include <QVector>
-#include "../tiles/tile.h"
-#include "../scene.h"
+#include "../tiles/tileitem.h"
+#include "../qrpgscene.h"
+
+namespace QRPG {
 
 class Map : public Scene
 {
@@ -24,4 +26,6 @@ public slots:
     void doTick();
 };
 
-#endif // MAP_H
+}
+
+#endif // QRPG_MAPSCENE_H

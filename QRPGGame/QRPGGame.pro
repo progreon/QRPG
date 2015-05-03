@@ -14,24 +14,24 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    screen.cpp \
-    game.cpp \
     maps/mapfactory.cpp \
     graphicsitem.cpp \
-    scene.cpp \
-    maps/map.cpp \
     battles/battlescene.cpp \
-    tiles/tile.cpp
+    maps/mapscene.cpp \
+    tiles/tileitem.cpp \
+    qrpggame.cpp \
+    qrpgscene.cpp \
+    qrpgscreen.cpp
 
 HEADERS  += mainwindow.h \
-    screen.h \
-    game.h \
     maps/mapfactory.h \
     graphicsitem.h \
-    scene.h \
-    maps/map.h \
     battles/battlescene.h \
-    tiles/tile.h
+    maps/mapscene.h \
+    tiles/tileitem.h \
+    qrpggame.h \
+    qrpgscreen.h \
+    qrpgscene.h
 
 FORMS    += mainwindow.ui
 

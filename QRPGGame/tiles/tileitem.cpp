@@ -1,13 +1,13 @@
-#include "tiles/tile.h"
+#include "tiles/tileitem.h"
 #include <QImage>
 
-Tile::Tile(const TileType &type, QObject *parent) : GraphicsItem(parent), tileType(type)
+QRPG::Tile::Tile(const TileType &type, QObject *parent) : GraphicsItem(parent), tileType(type)
 {
     tileSize = 8;
     createImages();
 }
 
-Tile::~Tile()
+QRPG::Tile::~Tile()
 {
     delete voidImage;
     delete stoneImage;
@@ -15,12 +15,12 @@ Tile::~Tile()
     delete waterImage;
 }
 
-void Tile::setTileType(const TileType &type)
+void QRPG::Tile::setTileType(const TileType &type)
 {
     tileType = type;
 }
 
-void Tile::createImages()
+void QRPG::Tile::createImages()
 {
     QRgb value;
     voidImage = new QImage(tileSize, tileSize, QImage::Format_RGB32);
@@ -77,12 +77,12 @@ void Tile::createImages()
     waterPixmap = QPixmap::fromImage(*waterImage);
 }
 
-QRectF Tile::boundingRect() const
+QRectF QRPG::Tile::boundingRect() const
 {
     return QRectF(0, 0, tileSize, tileSize);
 }
 
-const QPixmap *Tile::pixmap() const
+const QPixmap *QRPG::Tile::pixmap() const
 {
     switch (tileType) {
     case STONE:
@@ -100,7 +100,7 @@ const QPixmap *Tile::pixmap() const
     }
 }
 
-const QImage *Tile::image() const
+const QImage *QRPG::Tile::image() const
 {
     switch (tileType) {
     case STONE:
@@ -117,6 +117,6 @@ const QImage *Tile::image() const
     }
 }
 
-void Tile::doTick()
+void QRPG::Tile::doTick()
 {
 }

@@ -1,10 +1,10 @@
-#include "screen.h"
+#include "qrpgscreen.h"
 #include <QResizeEvent>
 #include <QPainter>
 #include <QPaintEvent>
 #include <QDebug>
 
-Screen::Screen(QWidget *parent) : QWidget(parent)
+QRPG::Screen::Screen(QWidget *parent) : QWidget(parent)
 {
     scale = 3.0;
     currentBuffer = 0;
@@ -13,13 +13,13 @@ Screen::Screen(QWidget *parent) : QWidget(parent)
     //    scene = 0;
 }
 
-Screen::~Screen()
+QRPG::Screen::~Screen()
 {
     delete currentBuffer;
     delete nextBuffer;
 }
 
-void Screen::setScene(Scene *scene)
+void QRPG::Screen::setScene(Scene *scene)
 {
     this->scene = scene;
     //    sceneRect = QRectF(0, 0, rect().width(), rect().height());
@@ -30,32 +30,32 @@ void Screen::setScene(Scene *scene)
     setScreenPos(0, 0);
 }
 
-void Screen::centerScreenOn(qreal x, qreal y)
+void QRPG::Screen::centerScreenOn(qreal x, qreal y)
 {
     sceneRect = QRectF(x - scaledRect().width() / 2.0, y - scaledRect().height() / 2.0, scaledRect().width(), scaledRect().height());
 }
 
-QRect Screen::scaledRect() const
+QRect QRPG::Screen::scaledRect() const
 {
     return QRect(0, 0, rect().width() / scale, rect().height() / scale);
 }
 
-QPointF Screen::screenCenter() const
+QPointF QRPG::Screen::screenCenter() const
 {
     return sceneRect.center();
 }
 
-QPointF Screen::screenPos() const
+QPointF QRPG::Screen::screenPos() const
 {
     return sceneRect.topLeft();
 }
 
-void Screen::setScreenPos(qreal x, qreal y)
+void QRPG::Screen::setScreenPos(qreal x, qreal y)
 {
     sceneRect = QRectF(x, y, scaledRect().width(), scaledRect().height());
 }
 
-void Screen::doRender()
+void QRPG::Screen::doRender()
 {
     if (scene != NULL) {
         scene->render(nextBuffer, screenPos());
@@ -65,7 +65,7 @@ void Screen::doRender()
     //    repaint();
 }
 
-void Screen::resizeEvent(QResizeEvent *re)
+void QRPG::Screen::resizeEvent(QResizeEvent *re)
 {
     QPointF midPos = sceneRect.center();
     QWidget::resizeEvent(re);
@@ -75,7 +75,7 @@ void Screen::resizeEvent(QResizeEvent *re)
     doRender();
 }
 
-void Screen::paintEvent(QPaintEvent *)
+void QRPG::Screen::paintEvent(QPaintEvent *)
 {
     //    qDebug() << "Screen::paintEvent(), width: " << rect().width() << ", height: " << rect().height();
     if (scene != NULL) {

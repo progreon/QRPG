@@ -1,11 +1,13 @@
-#ifndef GRAPHICSITEM_H
-#define GRAPHICSITEM_H
+#ifndef QRPG_GRAPHICSITEM_H
+#define QRPG_GRAPHICSITEM_H
 
 #include <QObject>
 #include <QPixmap>
 #include <QImage>
 #include <QRectF>
 #include <QPointF>
+
+namespace QRPG {
 
 class GraphicsItem : public QObject
 {
@@ -31,4 +33,6 @@ private:
 
 };
 
-#endif // GRAPHICSITEM_H
+}
+
+#endif // QRPG_GRAPHICSITEM_H
