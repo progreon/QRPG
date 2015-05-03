@@ -5,7 +5,7 @@
 
 namespace QRPG {
 
-class BattleScene : public Scene
+class BattleScene : public QRPGScene
 {
 public:
     BattleScene();

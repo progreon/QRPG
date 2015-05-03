@@ -1,5 +1,5 @@
-#ifndef SCENE_H
-#define SCENE_H
+#ifndef QRPG_QRPGSCENE_H
+#define QRPG_QRPGSCENE_H
 
 #include <QObject>
 #include <QPixmap>
@@ -12,12 +12,12 @@
 
 namespace QRPG {
 
-class Scene : public QObject
+class QRPGScene : public QObject
 {
     Q_OBJECT
 public:
-    explicit Scene(QObject *parent = 0);
-    ~Scene();
+    explicit QRPGScene(QObject *parent = 0);
+    ~QRPGScene();
     //TODO: Needs optimisation!
     //TODO: Return rendered "boundingRect"
     /**
@@ -48,4 +48,4 @@ private:
 
 }
 
-#endif // SCENE_H
+#endif // QRPG_QRPGSCENE_H

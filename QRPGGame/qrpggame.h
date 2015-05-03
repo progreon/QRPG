@@ -1,5 +1,5 @@
-#ifndef QRPGGAME_H
-#define QRPGGAME_H
+#ifndef QRPG_QRPGGAME_H
+#define QRPG_QRPGGAME_H
 
 #include <QObject>
 #include <QThread>
@@ -11,12 +11,12 @@
 
 namespace QRPG {
 
-class Game : public QObject
+class QRPGGame : public QObject
 {
     Q_OBJECT
 public:
-    explicit Game(Screen *screen);
-    ~Game();
+    explicit QRPGGame(QRPGScreen *screen);
+    ~QRPGGame();
     bool isRunning() const {return running;}
     void keyPressed(int key);
     void keyReleased(int key);
@@ -31,12 +31,12 @@ public slots:
     void start();
 
 private:
-    Screen *screen;
+    QRPGScreen *screen;
     QMap<int, bool> input;
     QThread *gameThread;
     QMutex inputMutex;
 
-    Map map;
+    MapScene map;
     void handleInput();
 
     volatile bool running;
@@ -47,4 +47,4 @@ private:
 
 }
 
-#endif // QRPGGAME_H
+#endif // QRPG_QRPGGAME_H

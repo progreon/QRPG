@@ -9,8 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->mainToolBar->hide();
     ui->statusBar->hide();
-    screen = new QRPG::Screen(this);
-    game = new QRPG::Game(screen);
+    screen = new QRPG::QRPGScreen(this);
+    game = new QRPG::QRPGGame(screen);
     this->setCentralWidget(screen);
     connect(game, SIGNAL(render()), screen, SLOT(doRender()));
     game->setupThread(&gameThread);

@@ -7,18 +7,18 @@
 
 namespace QRPG {
 
-class Map : public Scene
+class MapScene : public QRPGScene
 {
 public:
-    Map(int width = 20, int height = 20, QObject *parent = 0);
-    ~Map();
+    MapScene(int width = 20, int height = 20, QObject *parent = 0);
+    ~MapScene();
     int getWidth() const {return width;}
     int getHeight() const {return height;}
-    Tile *getTile(int x, int y) const;
+    TileItem *getTile(int x, int y) const;
 
 private:
     const int width, height;
-    QVector<QVector<Tile *> > tiles;
+    QVector<QVector<TileItem *> > tiles;
     int ticksPassed;
 
     // Scene interface

@@ -20,8 +20,8 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    QRPG::Screen *screen;
-    QRPG::Game *game;
+    QRPG::QRPGScreen *screen;
+    QRPG::QRPGGame *game;
     QThread gameThread;
 
     // QWidget interface

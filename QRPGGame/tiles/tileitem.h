@@ -2,6 +2,7 @@
 #define QRPG_TILEITEM_H
 
 #include "../graphicsitem.h"
+#include "model/qrpgtile.h"
 #include <QPixmap>
 #include <QImage>
 
@@ -14,11 +15,12 @@ enum TileType {
     WATER
 };
 
-class Tile : public GraphicsItem
+class TileItem : public GraphicsItem
 {
 public:
-    Tile(const TileType &type, QObject *parent = 0);
-    ~Tile();
+    TileItem(const TileType &type, QObject *parent = 0);
+//    TileItem(const QRPGDao::QRPGTile &daoTile, QObject *parent = 0); // TODO
+    ~TileItem();
     int getTileSize() const {return tileSize;}
     TileType getTileType() const {return tileType;}
     void setTileType(const TileType &type);

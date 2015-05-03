@@ -3,11 +3,11 @@
 
 namespace QRPG {
 
-class MapFactory
+class MapSceneFactory
 {
 public:
-    MapFactory();
-    ~MapFactory();
+    MapSceneFactory();
+    ~MapSceneFactory();
 };
 
 }

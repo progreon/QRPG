@@ -1,5 +1,5 @@
-#ifndef SCREEN_H
-#define SCREEN_H
+#ifndef QRPG_QRPGSCREEN_H
+#define QRPG_QRPGSCREEN_H
 
 #include <QWidget>
 #include <QPixmap>
@@ -11,18 +11,18 @@
 
 namespace QRPG {
 
-class Screen : public QWidget
+class QRPGScreen : public QWidget
 {
     Q_OBJECT
 public:
-    explicit Screen(QWidget *parent = 0);
-    ~Screen();
+    explicit QRPGScreen(QWidget *parent = 0);
+    ~QRPGScreen();
     void centerScreenOn(qreal x, qreal y);
     QRect scaledRect() const;
     QPointF screenCenter() const;
     QPointF screenPos() const;
     void setScreenPos(qreal x, qreal y);
-    void setScene(Scene *scene);
+    void setScene(QRPGScene *scene);
 
     int frames() const {return _frames;}
     void resetFrames() {_frames = 0;}
@@ -34,7 +34,7 @@ public slots:
 
 private:
     double scale;
-    Scene *scene;
+    QRPGScene *scene;
     QRectF sceneRect; // the part of the current scene that is shown
     QPixmap *currentBuffer;
     QPixmap *nextBuffer;
@@ -49,4 +49,4 @@ protected:
 
 }
 
-#endif // SCREEN_H
+#endif // QRPG_QRPGSCREEN_H

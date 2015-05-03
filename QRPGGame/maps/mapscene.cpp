@@ -1,13 +1,13 @@
 #include "mapscene.h"
 
-QRPG::Map::Map(int width, int height, QObject *parent) : Scene(parent), width(width), height(height)
+QRPG::MapScene::MapScene(int width, int height, QObject *parent) : QRPGScene(parent), width(width), height(height)
 {
     const int numColors = 4;
     tiles.resize(width);
     for (int i = 0; i < width; i++) {
         tiles[i].resize(height);
         for (int j = 0; j < height; j++) {
-            tiles[i][j] = new Tile(TileType(qrand() % numColors));
+            tiles[i][j] = new TileItem(TileType(qrand() % numColors));
             tiles[i][j]->setPos(i * 8, j * 8);
             addGraphicsItem(tiles[i][j]);
         }
@@ -15,7 +15,7 @@ QRPG::Map::Map(int width, int height, QObject *parent) : Scene(parent), width(wi
     ticksPassed = 0;
 }
 
-QRPG::Map::~Map()
+QRPG::MapScene::~MapScene()
 {
     for (int i = 0; i < tiles.length(); i++) {
         for (int j = 0; j < tiles[i].length(); j++) {
@@ -24,7 +24,7 @@ QRPG::Map::~Map()
     }
 }
 
-QRPG::Tile *QRPG::Map::getTile(int x, int y) const
+QRPG::TileItem *QRPG::MapScene::getTile(int x, int y) const
 {
     if (x >= 0 && x < width && y >= 0 && y < height) {
         return tiles[x][y];
@@ -33,7 +33,7 @@ QRPG::Tile *QRPG::Map::getTile(int x, int y) const
     }
 }
 
-void QRPG::Map::doTick()
+void QRPG::MapScene::doTick()
 {
     ticksPassed++;
     if (ticksPassed >= 2) {

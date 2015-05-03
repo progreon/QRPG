@@ -2,33 +2,33 @@
 #include <QDebug>
 #include <QDateTime>
 
-QRPG::Game::Game(Screen *screen)
+QRPG::QRPGGame::QRPGGame(QRPGScreen *screen)
 {
     this->screen = screen;
     screen->setScene(&map);
     screen->centerScreenOn(0, 0);
 }
 
-QRPG::Game::~Game()
+QRPG::QRPGGame::~QRPGGame()
 {
 
 }
 
-void QRPG::Game::keyPressed(int key)
+void QRPG::QRPGGame::keyPressed(int key)
 {
     inputMutex.lock();
     input.insert(key, true);
     inputMutex.unlock();
 }
 
-void QRPG::Game::keyReleased(int key)
+void QRPG::QRPGGame::keyReleased(int key)
 {
     inputMutex.lock();
     input.insert(key, false);
     inputMutex.unlock();
 }
 
-void QRPG::Game::setupThread(QThread *gameThread)
+void QRPG::QRPGGame::setupThread(QThread *gameThread)
 {
     this->gameThread = gameThread;
     connect(gameThread, SIGNAL(started()), this, SLOT(start()));
@@ -38,7 +38,7 @@ void QRPG::Game::setupThread(QThread *gameThread)
 //{
 //}
 
-void QRPG::Game::handleInput()
+void QRPG::QRPGGame::handleInput()
 {
     QPointF pos = screen->screenPos();
     if (input[Qt::Key_Left] | input[Qt::Key_Q]) {
@@ -57,14 +57,14 @@ void QRPG::Game::handleInput()
 //    screen->centerScreenOn(pos.x(), pos.y());
 }
 
-void QRPG::Game::start()
+void QRPG::QRPGGame::start()
 {
     qDebug() << "starting...";
     looping = true;
     run();
 }
 
-void QRPG::Game::stop()
+void QRPG::QRPGGame::stop()
 {
     qDebug() << "stopping...";
     looping = false;
@@ -73,7 +73,7 @@ void QRPG::Game::stop()
     qDebug() << "stopped";
 }
 
-void QRPG::Game::run()
+void QRPG::QRPGGame::run()
 {
     running = true;
 
@@ -114,7 +114,7 @@ void QRPG::Game::run()
     running = false;
 }
 
-void QRPG::Game::tick()
+void QRPG::QRPGGame::tick()
 {
 //    map.doTick();
     handleInput();
