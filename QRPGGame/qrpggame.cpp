@@ -100,7 +100,8 @@ void QRPG::QRPGGame::run()
         gameThread->msleep(3);
         if (shouldRender) {
             frames++;
-            emit render();
+//            emit render();
+            screen->doRender();
         }
         if (QDateTime::currentMSecsSinceEpoch() - start >= 1000) {
             start += 1000;

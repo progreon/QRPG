@@ -62,7 +62,6 @@ void QRPG::QRPGScreen::doRender()
     }
     std::swap(currentBuffer, nextBuffer);
     update();
-    //    repaint();
 }
 
 void QRPG::QRPGScreen::resizeEvent(QResizeEvent *re)
