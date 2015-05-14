@@ -18,7 +18,7 @@ QRPGDummyDao::~QRPGDummyDao()
     allProjects.clear();
 }
 
-QRPGDao::QRPGProject *QRPGDummyDao::createNewProject(const QDir &projectLocationDir, QString projectTitle, QString gameTitle)
+QRPGDao::QRPGProject *QRPGDummyDao::createNewProject(const QDir &projectLocationDir, const QString &projectTitle, const QString &gameTitle)
 {
     QString projectFolderURI = projectLocationDir.absolutePath().append(QDir::separator()).append(projectTitle);
     if (!allProjects.contains(projectFolderURI)) {
@@ -30,7 +30,12 @@ QRPGDao::QRPGProject *QRPGDummyDao::createNewProject(const QDir &projectLocation
     }
 }
 
-QRPGDao::QRPGProject *QRPGDummyDao::openProjectDir(QString projectDirURI)
+QRPGDao::QRPGProject *QRPGDummyDao::openDummyProject()
+{
+    return NULL;
+}
+
+QRPGDao::QRPGProject *QRPGDummyDao::openProjectDir(const QString &projectDirURI)
 {
     QMap<QString, QRPGDao::QRPGProject *>::const_iterator projIt = allProjects.find(projectDirURI);
     if (projIt != allProjects.end()) {
@@ -41,7 +46,7 @@ QRPGDao::QRPGProject *QRPGDummyDao::openProjectDir(QString projectDirURI)
     }
 }
 
-void QRPGDummyDao::closeProject(QString projectDirURI)
+void QRPGDummyDao::closeProject(const QString &projectDirURI)
 {
     QMap<QString, QRPGDao::QRPGProject *>::const_iterator projIt = openProjects.find(projectDirURI);
     if (projIt != openProjects.end()) {
@@ -56,4 +61,3 @@ QString QRPGDummyDao::getInfo() const
 
 } // namespace Impl
 } // namespace QRPGDao
-

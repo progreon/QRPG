@@ -20,9 +20,10 @@ private:
 
     // QRPGDatabase interface
 public:
-    QRPGDao::QRPGProject *createNewProject(const QDir &projectLocationDir, QString projectTitle, QString gameTitle);
-    QRPGDao::QRPGProject *openProjectDir(QString projectDirURI);
-    void closeProject(QString projectDirURI);
+    QRPGDao::QRPGProject *createNewProject(const QDir &projectLocationDir, const QString &projectTitle, const QString &gameTitle);
+    QRPGDao::QRPGProject *openDummyProject();
+    QRPGDao::QRPGProject *openProjectDir(const QString &projectDirURI);
+    void closeProject(const QString &projectDirURI);
     QString getInfo() const;
 };
 

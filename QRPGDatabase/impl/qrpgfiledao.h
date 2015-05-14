@@ -2,6 +2,7 @@
 #define QRPGDAO_IMPL_QRPGFILEDAO_H
 
 #include <QMap>
+#include <QDir>
 #include "qrpgdatabase.h"
 
 namespace QRPGDao {
@@ -14,14 +15,21 @@ public:
     ~QRPGFileDao();
 
 private:
+    static const QString relProjectFile;
+
     QRPGFileDao();
-    QMap<QString, QRPGDao::QRPGProject *> openProjects;
+    QMap<QString, QRPGDao::QRPGProject *> openProjects; // projectDirURI => project*
+    //            importTiles(project, tilesFolderURI, tilesFileURI);
+    void importMaps(QRPGProject *project, const QString &mapsFolderURI, const QString &mapsFileURI);
+    void importTiles(QRPGProject *project, const QString &tilesFolderURI, const QString &tilesFileURI);
+    void initProjectFromFile(QRPGDao::QRPGProject *project);
 
     // QRPGDatabase interface
 public:
-    QRPGDao::QRPGProject *createNewProject(const QDir &projectLocationDir, QString projectTitle, QString gameTitle);
-    QRPGDao::QRPGProject *openProjectDir(QString projectDirURI);
-    void closeProject(QString projectDirURI);
+    QRPGDao::QRPGProject *createNewProject(const QDir &projectLocationDir, const QString &projectTitle, const QString &gameTitle);
+    QRPGDao::QRPGProject *openDummyProject();
+    QRPGDao::QRPGProject *openProjectDir(const QString &projectDirURI);
+    void closeProject(const QString &projectDirURI);
     QString getInfo() const;
 };
 

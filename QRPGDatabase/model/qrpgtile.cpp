@@ -2,7 +2,10 @@
 
 namespace QRPGDao {
 
-QRPGTile::QRPGTile()
+QRPGTile::QRPGTile(int ID, const QString &name, QRPGSprite *sprite)
+    : _ID(ID)
+    , _name(name)
+    , _sprite(sprite)
 {
 
 }

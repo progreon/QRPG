@@ -1,0 +1,16 @@
+#this indicates a comment or ignored line
+#tiles structure:
+#every tile in the same tiles-file has the same width and height, and is a square
+#ONE project uses ONE tilesize
+#spriteid;"name";"spriteuri"[;x1;y1[;x2;y2[...]][;fps]] makes an (animated) sprite
+#it makes a 'sprite-frame' starting from each given point, spanning the tilesize
+#if no coords are given, only 1 'sprite-frame' is used, starting from (0,0)
+#if no fps is given, 0 is used
+#e.g.: "1;stone;stone.png" a stone-sprite with 1 'sprite-frame'
+#e.g.: "2;water;water.png;0;0;8;0;0;8;8;8;4" a water-sprite with 4 'sprite-frames', showing 4 frames per second
+#if the sprite doesn't exist, a transparant sprite will be used
+
+0;void;basictiles.png;0;0
+1;stone;basictiles.png;8;0
+2;water;basictiles.png;16;0
+3;grass;basictiles.png;24;0

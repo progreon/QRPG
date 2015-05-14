@@ -13,12 +13,19 @@ QRPGDatabase *newDao(DaoType daoType)
         return new QRPGDao::Impl::QRPGDummyDao();
     }
 
-    return NULL;
+//    return NULL;
 }
 
-QRPGProject *QRPGDatabase::newProject(QString projectDirURI, QString projectTitle, QString gameTitle)
+QRPGProject *QRPGDatabase::newProject(const QString &projectDirURI, const QString &projectTitle, const QString &gameTitle)
 {
     return new QRPGProject(this, projectDirURI, projectTitle, gameTitle);
+}
+
+void QRPGDatabase::setProjectTileSize(QRPGProject *project, int tileSize)
+{
+    if (project != NULL && tileSize != 0) {
+        project->setTileSize(tileSize);
+    }
 }
 
 } // namespace QRPGDao

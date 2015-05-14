@@ -16,15 +16,17 @@ class QRPGDatabase
 {
 
 public:
-    virtual QRPGProject *createNewProject(const QDir &projectLocationDir, QString projectTitle, QString gameTitle) = 0;
-    virtual QRPGProject *openProjectDir(QString projectDirURI) = 0;
+    virtual QRPGProject *createNewProject(const QDir &projectLocationDir, const QString &projectTitle, const QString &gameTitle) = 0;
+    virtual QRPGProject *openDummyProject() = 0;
+    virtual QRPGProject *openProjectDir(const QString &projectDirURI) = 0;
 //    virtual QRPGProject *openProjectFile(QString projectFileURI) = 0;
 //    virtual QList<QRPGProject *> getOpenProjects() const = 0;
-    virtual void closeProject(QString projectDirURI) = 0;
+    virtual void closeProject(const QString &projectDirURI) = 0;
     virtual QString getInfo() const = 0; // Tells you what kind of Dao this is
 
 protected:
-    QRPGProject *newProject(QString projectDirURI, QString projectTitle, QString gameTitle);
+    QRPGProject *newProject(const QString &projectDirURI, const QString &projectTitle, const QString &gameTitle);
+    void setProjectTileSize(QRPGProject *project, int tileSize);
 };
 
 enum DaoType
@@ -33,7 +35,7 @@ enum DaoType
     FILE
 };
 
-QRPGDatabase *newDao(DaoType daoType = DUMMY);
+QRPGDatabase *newDao(DaoType daoType = FILE);
 
 } // namespace QRPGDao
 

@@ -1,0 +1,9 @@
+#this indicates a comment or ignored line
+#maps structure:
+#id;mapname;filename for each map
+#e.g.: "1;Pallet Town;map1.qrpgmap" marks a map with mapid=1, named "Pallet Town", found in file "map1.qrpgmap"
+#OR
+#id;filename for each map
+#e.g.: "1;map1.qrpgmap" marks a map with mapid=1, found in file "map1.qrpgmap"
+
+0;Sample Map;mapsample
