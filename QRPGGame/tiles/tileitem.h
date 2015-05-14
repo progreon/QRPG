@@ -2,7 +2,6 @@
 #define QRPG_TILEITEM_H
 
 #include "../graphicsitem.h"
-#include "model/qrpgtile.h"
 #include <QPixmap>
 #include <QImage>
 
@@ -12,7 +11,8 @@ enum TileType {
     VOID,
     STONE,
     GRASS,
-    WATER
+    WATER,
+    CURRENT
 };
 
 class TileItem : public GraphicsItem
@@ -23,6 +23,7 @@ public:
     ~TileItem();
     int getTileSize() const {return tileSize;}
     TileType getTileType() const {return tileType;}
+    void setSprite(QPixmap sprite) {currentSprite = sprite;}
     void setTileType(const TileType &type);
 
 private:
@@ -38,6 +39,8 @@ private:
     QPixmap stonePixmap;
     QPixmap grassPixmap;
     QPixmap waterPixmap;
+
+    QPixmap currentSprite;
 
     // GraphicsItem interface
 public:

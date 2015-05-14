@@ -6,7 +6,7 @@
 
 QRPG::QRPGScreen::QRPGScreen(QWidget *parent) : QWidget(parent)
 {
-    scale = 3.0;
+    _scale = 3.0;
     currentBuffer = 0;
     nextBuffer = 0;
     setScene(0);
@@ -32,12 +32,13 @@ void QRPG::QRPGScreen::setScene(QRPGScene *scene)
 
 void QRPG::QRPGScreen::centerScreenOn(qreal x, qreal y)
 {
-    sceneRect = QRectF(x - scaledRect().width() / 2.0, y - scaledRect().height() / 2.0, scaledRect().width(), scaledRect().height());
+    QRectF scaled = scaledRect();
+    sceneRect = QRectF(x - scaled.width() / 2.0, y - scaled.height() / 2.0, scaled.width(), scaled.height());
 }
 
-QRect QRPG::QRPGScreen::scaledRect() const
+QRectF QRPG::QRPGScreen::scaledRect() const
 {
-    return QRect(0, 0, rect().width() / scale, rect().height() / scale);
+    return QRectF(0, 0, rect().width() / _scale, rect().height() / _scale);
 }
 
 QPointF QRPG::QRPGScreen::screenCenter() const
@@ -50,6 +51,16 @@ QPointF QRPG::QRPGScreen::screenPos() const
     return sceneRect.topLeft();
 }
 
+//void QRPG::QRPGScreen::setScale(double scale)
+//{
+//    QPointF midPos = sceneRect.center();
+//    this->_scale = scale;
+//    currentBuffer = new QPixmap(scaledRect().width(), scaledRect().height());
+//    nextBuffer = new QPixmap(scaledRect().width(), scaledRect().height());
+//    this->centerScreenOn(midPos.x(), midPos.y());
+//    doRender();
+//}
+
 void QRPG::QRPGScreen::setScreenPos(qreal x, qreal y)
 {
     sceneRect = QRectF(x, y, scaledRect().width(), scaledRect().height());
@@ -57,6 +68,7 @@ void QRPG::QRPGScreen::setScreenPos(qreal x, qreal y)
 
 void QRPG::QRPGScreen::doRender()
 {
+    QMutexLocker locker(&renderMutex);
     if (scene != NULL) {
         scene->render(nextBuffer, screenPos());
     }
@@ -82,7 +94,7 @@ void QRPG::QRPGScreen::paintEvent(QPaintEvent *)
         if (currentBuffer != NULL) {
             QPainter painter(this);
             if (painter.isActive()) {
-                painter.scale(scale, scale);
+                painter.scale(_scale, _scale);
                 painter.drawPixmap(0, 0, *currentBuffer);
             }
         }

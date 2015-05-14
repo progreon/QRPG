@@ -7,6 +7,7 @@
 
 int main(int argc, char *argv[])
 {
+    Q_INIT_RESOURCE(files);
     QApplication a(argc, argv);
 
     QRPGDao::QRPGDatabase *dao = QRPGDao::newDao(QRPGDao::FILE);

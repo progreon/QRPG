@@ -33,6 +33,7 @@ public:
      * @return <code>true</code> if the item is new to this scene, <code>false</code> otherwise
      */
     virtual bool addGraphicsItem(GraphicsItem *item, int layer = 0);
+    virtual bool deleteGraphicsItem(GraphicsItem *item);
 
 signals:
 

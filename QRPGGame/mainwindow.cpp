@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     game = new QRPG::QRPGGame(screen);
     this->setCentralWidget(screen);
     connect(game, SIGNAL(render()), screen, SLOT(doRender()));
+    game->openGameProject(0);
     game->setupThread(&gameThread);
     game->moveToThread(&gameThread);
     gameThread.start();

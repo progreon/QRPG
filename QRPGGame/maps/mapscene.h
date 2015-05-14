@@ -15,6 +15,7 @@ public:
     int getWidth() const {return width;}
     int getHeight() const {return height;}
     TileItem *getTile(int x, int y) const;
+    void setTileItem(int x, int y, TileItem *tile);
 
 private:
     const int width, height;

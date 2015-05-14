@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/qrpg">
+        <file>files/basictiles.png</file>
+        <file>files/mapsample</file>
+        <file>files/mapssample</file>
+        <file>files/projectsample</file>
+        <file>files/tilessample</file>
+    </qresource>
+</RCC>

@@ -99,8 +99,10 @@ const QPixmap *QRPG::TileItem::pixmap() const
     case WATER:
         return &waterPixmap;
         break;
-    default: // VOID
+    case VOID:
         return &voidPixmap;
+    default: // CURRENT
+        return &currentSprite;
         break;
     }
 }

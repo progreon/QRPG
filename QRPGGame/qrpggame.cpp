@@ -4,14 +4,16 @@
 
 QRPG::QRPGGame::QRPGGame(QRPGScreen *screen)
 {
+    this->_tps = 60.0;
     this->screen = screen;
-    screen->setScene(&map);
-    screen->centerScreenOn(0, 0);
+    map = NULL;
+    currProject = NULL;
+    running = false;
 }
 
 QRPG::QRPGGame::~QRPGGame()
 {
-
+    delete map;
 }
 
 void QRPG::QRPGGame::keyPressed(int key)
@@ -28,6 +30,18 @@ void QRPG::QRPGGame::keyReleased(int key)
     inputMutex.unlock();
 }
 
+void QRPG::QRPGGame::openGameProject(const QRPGDao::QRPGProject *project)
+{
+    // TODO !!
+    this->stop();
+    if (map != NULL) delete map;
+    currProject = project;
+    map = mapLoader.newExampleMap();
+//    map = new MapScene(20, 20, this);
+    screen->setScene(map);
+    screen->centerScreenOn(0, 0);
+}
+
 void QRPG::QRPGGame::setupThread(QThread *gameThread)
 {
     this->gameThread = gameThread;
@@ -42,43 +56,54 @@ void QRPG::QRPGGame::handleInput()
 {
     QPointF pos = screen->screenPos();
     if (input[Qt::Key_Left] | input[Qt::Key_Q]) {
-        pos.setX(pos.x() - 2.0);
+        pos.setX(pos.x() - 1.0);
     }
     if (input[Qt::Key_Right] | input[Qt::Key_D]) {
-        pos.setX(pos.x() + 2.0);
+        pos.setX(pos.x() + 1.0);
     }
     if (input[Qt::Key_Up] | input[Qt::Key_Z]) {
-        pos.setY(pos.y() - 2.0);
+        pos.setY(pos.y() - 1.0);
     }
     if (input[Qt::Key_Down] | input[Qt::Key_S]) {
-        pos.setY(pos.y() + 2.0);
+        pos.setY(pos.y() + 1.0);
     }
+//    if (input[Qt::Key_Minus]) {
+//        screen->setScale(screen->scale() - 0.01);
+//    }
+//    if (input[Qt::Key_Plus]) {
+//        screen->setScale(screen->scale() + 0.01);
+//    }
     screen->setScreenPos(pos.x(), pos.y());
 //    screen->centerScreenOn(pos.x(), pos.y());
 }
 
 void QRPG::QRPGGame::start()
 {
-    qDebug() << "starting...";
-    looping = true;
-    run();
+    if (currProject != NULL) {
+        qDebug() << "Starting...";
+        looping = true;
+        run();
+    } else {
+        qDebug() << "Did not start, current project = NULL!";
+    }
 }
 
 void QRPG::QRPGGame::stop()
 {
-    qDebug() << "stopping...";
-    looping = false;
-    while (isRunning()) {}
-    gameThread->exit();
-    qDebug() << "stopped";
+    if (isRunning()) {
+        qDebug() << "stopping...";
+        looping = false;
+        while (isRunning()) {}
+        gameThread->exit();
+        qDebug() << "stopped";
+    }
 }
 
 void QRPG::QRPGGame::run()
 {
     running = true;
 
-    //    int ticks_per_sec = 60;
-    double msPerTick = 1000.0/60.0;
+    double msPerTick = 1000.0/_tps;
     int ticks = 0;
     int frames = 0;
     screen->resetFrames();
@@ -97,11 +122,11 @@ void QRPG::QRPGGame::run()
             tick();
             delta -= 1;
         }
-        gameThread->msleep(3);
+        gameThread->usleep(3000);
         if (shouldRender) {
             frames++;
-//            emit render();
-            screen->doRender();
+            emit render();
+//            screen->doRender();
         }
         if (QDateTime::currentMSecsSinceEpoch() - start >= 1000) {
             start += 1000;

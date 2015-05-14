@@ -24,7 +24,9 @@ SOURCES += main.cpp\
     tiles/tileitemfactory.cpp \
     maps/mapscenefactory.cpp \
     sprites/sprite.cpp \
-    sprites/spritefactory.cpp
+    sprites/spritefactory.cpp \
+    loaders/qrpggameloader.cpp \
+    loaders/qrpgmaploader.cpp
 
 HEADERS  += mainwindow.h \
     graphicsitem.h \
@@ -37,7 +39,9 @@ HEADERS  += mainwindow.h \
     tiles/tileitemfactory.h \
     maps/mapscenefactory.h \
     sprites/sprite.h \
-    sprites/spritefactory.h
+    sprites/spritefactory.h \
+    loaders/qrpggameloader.h \
+    loaders/qrpgmaploader.h
 
 FORMS    += mainwindow.ui
 
@@ -60,3 +64,6 @@ win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../build-QRPGD
 else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../build-QRPGDatabase-Desktop_Qt_5_4_1_MinGW_32bit/debug/libQRPGDatabase.a
 else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../build-QRPGDatabase-Desktop_Qt_5_4_1_MinGW_32bit/release/QRPGDatabase.lib
 else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../build-QRPGDatabase-Desktop_Qt_5_4_1_MinGW_32bit/debug/QRPGDatabase.lib
+
+RESOURCES += \
+    testfiles.qrc

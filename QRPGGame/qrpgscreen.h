@@ -2,6 +2,8 @@
 #define QRPG_QRPGSCREEN_H
 
 #include <QWidget>
+#include <QMutex>
+#include <QMutexLocker>
 #include <QPixmap>
 #include <QRectF>
 #include <QRect>
@@ -18,9 +20,11 @@ public:
     explicit QRPGScreen(QWidget *parent = 0);
     ~QRPGScreen();
     void centerScreenOn(qreal x, qreal y);
-    QRect scaledRect() const;
+    double scale() const {return _scale;}
+    QRectF scaledRect() const;
     QPointF screenCenter() const;
     QPointF screenPos() const;
+//    void setScale(double scale);
     void setScreenPos(qreal x, qreal y);
     void setScene(QRPGScene *scene);
 
@@ -33,13 +37,15 @@ public slots:
     void doRender();
 
 private:
-    double scale;
+    double _scale;
     QRPGScene *scene;
     QRectF sceneRect; // the part of the current scene that is shown
     QPixmap *currentBuffer;
     QPixmap *nextBuffer;
 
     int _frames;
+
+    QMutex renderMutex;
 
     // QWidget interface
 protected:

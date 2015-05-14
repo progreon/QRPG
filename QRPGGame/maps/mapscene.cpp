@@ -7,9 +7,9 @@ QRPG::MapScene::MapScene(int width, int height, QObject *parent) : QRPGScene(par
     for (int i = 0; i < width; i++) {
         tiles[i].resize(height);
         for (int j = 0; j < height; j++) {
-            tiles[i][j] = new TileItem(TileType(qrand() % numColors));
-            tiles[i][j]->setPos(i * 8, j * 8);
-            addGraphicsItem(tiles[i][j]);
+//            tiles[i][j] = new TileItem(TileType(qrand() % numColors));
+//            tiles[i][j]->setPos(i * 8, j * 8);
+//            addGraphicsItem(tiles[i][j]);
         }
     }
     ticksPassed = 0;
@@ -30,6 +30,17 @@ QRPG::TileItem *QRPG::MapScene::getTile(int x, int y) const
         return tiles[x][y];
     } else {
         return NULL;
+    }
+}
+
+void QRPG::MapScene::setTileItem(int x, int y, QRPG::TileItem *tile)
+{
+    if (x >= 0 && x < width && y >= 0 && y < height) {
+//        deleteGraphicsItem(tiles[x][y]);
+//        delete tiles[x][y];
+        tile->setPos(x * 8, y * 8);
+        tiles[x][y] = tile;
+        addGraphicsItem(tile);
     }
 }
 

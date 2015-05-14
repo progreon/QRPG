@@ -48,6 +48,18 @@ bool QRPG::QRPGScene::addGraphicsItem(GraphicsItem *item, int layer)
     return !exists;
 }
 
+bool QRPG::QRPGScene::deleteGraphicsItem(QRPG::GraphicsItem *item)
+{
+    bool exists = false;
+    foreach (QSet<GraphicsItem *> set, itemsPerLayer) {
+        if (set.contains(item)) {
+            exists = true;
+            set.remove(item);
+        }
+    }
+    return exists;
+}
+
 void QRPG::QRPGScene::doTick()
 {
     foreach (QSet<GraphicsItem *> set, itemsPerLayer) {
