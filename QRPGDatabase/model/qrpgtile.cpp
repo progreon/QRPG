@@ -1,4 +1,5 @@
 #include "qrpgtile.h"
+#include <QDebug>
 
 namespace QRPGDao {
 

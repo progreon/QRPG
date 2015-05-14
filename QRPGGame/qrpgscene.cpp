@@ -12,8 +12,9 @@ QRPG::QRPGScene::~QRPGScene()
 
 }
 
-void QRPG::QRPGScene::render(QPixmap *screen, const QPointF &pos) const
+void QRPG::QRPGScene::render(QPixmap *screen, const QPointF &pos)
 {
+//    QMutexLocker locker(&renderMutex);
     QRectF screenRect(pos.x(), pos.y(), screen->rect().width(), screen->rect().height());
     if (!screen->isNull()) {
         QPainter painter(screen);

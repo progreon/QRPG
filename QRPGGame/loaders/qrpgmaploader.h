@@ -5,28 +5,27 @@
 #include <QMap>
 #include <QPixmap>
 #include "model/qrpgmap.h"
-#include "qrpgdatabase.h"
-#include "maps/mapscene.h"
+#include "../maps/mapscene.h"
 
 namespace QRPG {
+
+class QRPGGame;
 
 class QRPGMapLoader : public QObject
 {
     Q_OBJECT
 public:
-    explicit QRPGMapLoader(QRPGDao::QRPGDatabase *dao = 0, QObject *parent = 0);
+    explicit QRPGMapLoader(QRPGGame *game, QObject *parent = 0);
     ~QRPGMapLoader();
     MapScene *newMap(QRPGDao::QRPGMap *map);
-    MapScene *newExampleMap();
+//    MapScene *newExampleMap();
 
 signals:
 
 public slots:
 
 private:
-    QRPGDao::QRPGDatabase *dao;
-    QMap<int, QPixmap> sprites;
-    void loadSprites();
+    QRPGGame *_game;
 };
 
 } // namespace QRPG

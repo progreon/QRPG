@@ -19,7 +19,7 @@ public:
     virtual QPointF pos() const;
     virtual void moveBy(qreal dx, qreal dy);
     virtual const QPixmap *pixmap() const = 0;
-    virtual const QImage *image() const = 0;
+//    virtual const QImage *image() const = 0;
     virtual QRectF sceneBoundingRect() const;
     virtual void setPos(qreal x, qreal y);
 

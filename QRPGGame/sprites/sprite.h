@@ -1,28 +1,31 @@
-#ifndef QRGP_SPRITE_H
-#define QRGP_SPRITE_H
+#ifndef QRPG_SPRITE_H
+#define QRPG_SPRITE_H
 
 #include <QVector>
 #include <QPixmap>
 #include "model/qrpgsprite.h"
-#include "../qrpggame.h"
+
+namespace QRPG {
+    class QRPGGame;
+}
 
 /**
  * This class is to make sure all the same sprites on the map change at the same time!
  */
-namespace QRGP {
+namespace QRPG {
 
 class Sprite
 {
 public:
 //    Sprite(QVector<const QPixmap *> spriteFrames, qreal fps = 0);
-    Sprite(QRPG::QRPGGame *game, const QRPGDao::QRPGSprite *sprite);
+    Sprite(QRPGGame *game, const QRPGDao::QRPGSprite *sprite);
     ~Sprite();
 
     void doTick();
     const QPixmap *pixmap() const {return spriteFrames.value(_frameIndex);}
 
 private:
-    QRPG::QRPGGame *game;
+    QRPGGame *game;
 
     const QRPGDao::QRPGSprite *sprite;
     QVector<const QPixmap *> spriteFrames;
@@ -33,6 +36,6 @@ private:
     int _ticksPassed;
 };
 
-} // namespace QRGP
+} // namespace QRPG
 
-#endif // QRGP_SPRITE_H
+#endif // QRPG_SPRITE_H

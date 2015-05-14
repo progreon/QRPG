@@ -2,6 +2,8 @@
 #define QRPG_QRPGSCENE_H
 
 #include <QObject>
+//#include <QMutex>
+//#include <QMutexLocker>
 #include <QPixmap>
 #include <QImage>
 #include <QPointF>
@@ -25,7 +27,7 @@ public:
      * @param screen The pixmap to render on
      * @param point The top-left corner of the scene that should be rendered
      */
-    virtual void render(QPixmap *screen, const QPointF &pos) const;
+    virtual void render(QPixmap *screen, const QPointF &pos);
     /**
      * @brief addGraphicsItem Add an item to the scene
      * @param item The item to add to the scene
@@ -41,6 +43,8 @@ public slots:
     virtual void doTick();
 
 private:
+//    QMutex renderMutex;
+
     QVector<int> usedLayers; // To keep track of the layers used, and to be able to loop over them in order.
     QMap<int, QSet<GraphicsItem *> > itemsPerLayer;
     // TODO: needs optimisation?

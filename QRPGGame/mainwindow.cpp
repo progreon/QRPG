@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QKeyEvent>
+#include "qrpgdatabase.h"
+#include "model/qrpgproject.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -13,7 +15,9 @@ MainWindow::MainWindow(QWidget *parent) :
     game = new QRPG::QRPGGame(screen);
     this->setCentralWidget(screen);
     connect(game, SIGNAL(render()), screen, SLOT(doRender()));
-    game->openGameProject(0);
+    QRPGDao::QRPGDatabase *dao = QRPGDao::newDao(QRPGDao::FILE);
+    QRPGDao::QRPGProject *dummyProject = dao->openDummyProject();
+    game->openGameProject(dummyProject);
     game->setupThread(&gameThread);
     game->moveToThread(&gameThread);
     gameThread.start();

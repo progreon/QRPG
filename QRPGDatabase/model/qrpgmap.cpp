@@ -75,5 +75,14 @@ void QRPGMap::setWidth(int width)
     _width = width;
 }
 
+const QRPGTile *QRPGMap::tile(int layer, int x, int y)
+{
+    if (layer < 0 || layer >= 3 || x < 0 || x >= _width || y < 0 || y >= _height) {
+        return NULL;
+    } else {
+        return tiles[layer][x][y];
+    }
+}
+
 } // namespace QRPGDao
 

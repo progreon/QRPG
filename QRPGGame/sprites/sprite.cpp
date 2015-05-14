@@ -1,6 +1,7 @@
 #include "sprites/sprite.h"
+#include "../qrpggame.h"
 
-namespace QRGP {
+namespace QRPG {
 
 //Sprite::Sprite(QVector<const QPixmap *> spriteFrames, qreal fps)
 //    : spriteFrames(spriteFrames)
@@ -9,7 +10,7 @@ namespace QRGP {
 
 //}
 
-Sprite::Sprite(QRPG::QRPGGame *game, const QRPGDao::QRPGSprite *sprite)
+Sprite::Sprite(QRPGGame *game, const QRPGDao::QRPGSprite *sprite)
 {
     this->game = game;
     spriteFrames = sprite->spriteFrames();

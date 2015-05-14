@@ -1,8 +1,11 @@
 #include "qrpggame.h"
+
 #include <QDebug>
 #include <QDateTime>
+#include "model/qrpgsprite.h"
 
 QRPG::QRPGGame::QRPGGame(QRPGScreen *screen)
+    : mapLoader(this)
 {
     this->_tps = 60.0;
     this->screen = screen;
@@ -13,7 +16,11 @@ QRPG::QRPGGame::QRPGGame(QRPGScreen *screen)
 
 QRPG::QRPGGame::~QRPGGame()
 {
+    this->stop();
     delete map;
+    foreach (Sprite *sprite, usedSprites) {
+        delete sprite;
+    }
 }
 
 void QRPG::QRPGGame::keyPressed(int key)
@@ -35,11 +42,14 @@ void QRPG::QRPGGame::openGameProject(const QRPGDao::QRPGProject *project)
     // TODO !!
     this->stop();
     if (map != NULL) delete map;
-    currProject = project;
-    map = mapLoader.newExampleMap();
-//    map = new MapScene(20, 20, this);
-    screen->setScene(map);
-    screen->centerScreenOn(0, 0);
+    if (project != NULL) {
+        currProject = project;
+        loadSprites(currProject);
+        map = mapLoader.newMap(currProject->maps().value(0));
+    //    map = mapLoader.newExampleMap();
+        screen->setScene(map);
+        screen->centerScreenOn(0, 0);
+    }
 }
 
 void QRPG::QRPGGame::setupThread(QThread *gameThread)
@@ -85,6 +95,16 @@ void QRPG::QRPGGame::start()
         run();
     } else {
         qDebug() << "Did not start, current project = NULL!";
+    }
+}
+
+void QRPG::QRPGGame::loadSprites(const QRPGDao::QRPGProject *project)
+{
+    foreach (Sprite *sprite, usedSprites) {
+        delete sprite;
+    }
+    foreach (QRPGDao::QRPGSprite *qrpgSprite, project->sprites().values()) {
+        usedSprites.insert(qrpgSprite->ID(), new Sprite(this, qrpgSprite));
     }
 }
 
@@ -142,6 +162,9 @@ void QRPG::QRPGGame::run()
 
 void QRPG::QRPGGame::tick()
 {
+//    foreach (Sprite *sprite, usedSprites) {
+//        sprite->doTick();
+//    }
 //    map.doTick();
     handleInput();
 }

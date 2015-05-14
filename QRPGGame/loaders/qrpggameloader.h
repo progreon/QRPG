@@ -14,7 +14,6 @@ public:
     explicit QRPGGameLoader(QObject *parent = 0);
     ~QRPGGameLoader();
 
-
 signals:
 
 public slots:

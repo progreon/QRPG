@@ -8,8 +8,9 @@
 #include "model/qrpgproject.h"
 #include "qrpgscreen.h"
 #include "qrpgscene.h"
-#include "maps/mapscene.h"
 #include "loaders/qrpgmaploader.h"
+#include "maps/mapscene.h"
+#include "sprites/sprite.h"
 
 namespace QRPG {
 
@@ -24,6 +25,7 @@ public:
     void keyReleased(int key);
     void openGameProject(const QRPGDao::QRPGProject *project);
     void setupThread(QThread *gameThread);
+    Sprite *sprite(int ID) const {return usedSprites.value(ID);}
     void stop();
 //    void test();
     qreal tps() const {return _tps;}
@@ -42,6 +44,8 @@ private:
     QThread *gameThread;
     QMutex inputMutex;
 
+    QMap<int, Sprite *> usedSprites;
+    void loadSprites(const QRPGDao::QRPGProject *project);
     MapScene *map;
     void handleInput();
 

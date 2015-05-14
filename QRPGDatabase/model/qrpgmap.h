@@ -17,11 +17,13 @@ public:
     int height() const {return _height;}
     int ID() const {return _ID;}
     QString name() const {return _name;}
+    const QRPGProject *project() const {return _project;}
     void setHeight(int height);
     bool setSpawn(int x, int y);
     bool setTile(int layer, int x, int y, QRPGTile *tile);
     void setWidth(int width);
     QPoint spawn() const {return _spawn;}
+    const QRPGTile *tile(int layer, int x, int y);
     int width() const {return _width;}
 
 private:
