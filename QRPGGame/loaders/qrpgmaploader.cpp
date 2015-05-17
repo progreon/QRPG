@@ -30,6 +30,7 @@ MapScene *QRPGMapLoader::newMap(QRPGDao::QRPGMap *map)
             for (int y=0; y<map->height(); y++) {
                 const QRPGDao::QRPGTile *daoTile = map->tile(l, x, y);
                 if (daoTile != NULL) {
+//                    qDebug() << l << x << y << "spriteID: " << daoTile->sprite()->ID() << "/" << _game->sprites().size();
                     TileItem *tile = new TileItem(_game->sprite(daoTile->sprite()->ID()));
                     mapScene->setTileItem(x, y, tile);
                 }

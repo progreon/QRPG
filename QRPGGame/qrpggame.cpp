@@ -12,6 +12,7 @@ QRPG::QRPGGame::QRPGGame(QRPGScreen *screen)
     map = NULL;
     currProject = NULL;
     running = false;
+    connect(this, SIGNAL(render()), screen, SLOT(doRender()));
 }
 
 QRPG::QRPGGame::~QRPGGame()
@@ -40,7 +41,8 @@ void QRPG::QRPGGame::keyReleased(int key)
 void QRPG::QRPGGame::openGameProject(const QRPGDao::QRPGProject *project)
 {
     // TODO !!
-    this->stop();
+//    this->stop();
+    qDebug() << "opening project ...";
     if (map != NULL) delete map;
     if (project != NULL) {
         currProject = project;
@@ -50,12 +52,18 @@ void QRPG::QRPGGame::openGameProject(const QRPGDao::QRPGProject *project)
         screen->setScene(map);
         screen->centerScreenOn(0, 0);
     }
+    qDebug() << "done opening project";
 }
 
 void QRPG::QRPGGame::setupThread(QThread *gameThread)
 {
     this->gameThread = gameThread;
     connect(gameThread, SIGNAL(started()), this, SLOT(start()));
+}
+
+QRPG::Sprite *QRPG::QRPGGame::sprite(int ID) const
+{
+    return usedSprites.value(ID);
 }
 
 //void QRPG::Game::test()
@@ -162,9 +170,9 @@ void QRPG::QRPGGame::run()
 
 void QRPG::QRPGGame::tick()
 {
-//    foreach (Sprite *sprite, usedSprites) {
-//        sprite->doTick();
-//    }
+    foreach (Sprite *sprite, usedSprites) {
+        sprite->doTick();
+    }
 //    map.doTick();
     handleInput();
 }

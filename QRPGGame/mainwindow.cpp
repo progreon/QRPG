@@ -11,10 +11,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->mainToolBar->hide();
     ui->statusBar->hide();
+    game = NULL;
     screen = new QRPG::QRPGScreen(this);
     game = new QRPG::QRPGGame(screen);
     this->setCentralWidget(screen);
-    connect(game, SIGNAL(render()), screen, SLOT(doRender()));
+//    connect(game, SIGNAL(render()), screen, SLOT(doRender()));
     QRPGDao::QRPGDatabase *dao = QRPGDao::newDao(QRPGDao::FILE);
     QRPGDao::QRPGProject *dummyProject = dao->openDummyProject();
     game->openGameProject(dummyProject);
@@ -26,25 +27,25 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete game;
+    if (game != NULL) delete game;
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *ke)
 {
-    game->keyPressed(ke->key());
+    if (game != NULL) game->keyPressed(ke->key());
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *ke)
 {
-    game->keyReleased(ke->key());
+    if (game != NULL) game->keyReleased(ke->key());
 }
 
 void MainWindow::on_action_Stop_triggered()
 {
-    game->stop();
+    if (game != NULL) game->stop();
 }
 
 void MainWindow::closeEvent(QCloseEvent *)
 {
-    game->stop();
+    if (game != NULL) game->stop();
 }

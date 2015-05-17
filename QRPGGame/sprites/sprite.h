@@ -3,6 +3,7 @@
 
 #include <QVector>
 #include <QPixmap>
+#include <QDebug>
 #include "model/qrpgsprite.h"
 
 namespace QRPG {
@@ -22,13 +23,14 @@ public:
     ~Sprite();
 
     void doTick();
-    const QPixmap *pixmap() const {return spriteFrames.value(_frameIndex);}
+    const QPixmap *pixmap() const;
 
 private:
     QRPGGame *game;
 
-    const QRPGDao::QRPGSprite *sprite;
+//    const QRPGDao::QRPGSprite *sprite;
     QVector<const QPixmap *> spriteFrames;
+//    QVector<QPixmap> spriteFramesCopy;
     qreal fps;
     int spriteID;
 

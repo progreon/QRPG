@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QThread>
 #include <QMutex>
+#include <QMutexLocker>
 #include <QMap>
 #include "model/qrpgproject.h"
 #include "qrpgscreen.h"
@@ -25,7 +26,8 @@ public:
     void keyReleased(int key);
     void openGameProject(const QRPGDao::QRPGProject *project);
     void setupThread(QThread *gameThread);
-    Sprite *sprite(int ID) const {return usedSprites.value(ID);}
+    Sprite *sprite(int ID) const;
+    const QMap<int, Sprite *> sprites() const {return usedSprites;}
     void stop();
 //    void test();
     qreal tps() const {return _tps;}
@@ -43,6 +45,7 @@ private:
     QMap<int, bool> input;
     QThread *gameThread;
     QMutex inputMutex;
+    QMutex startMutex;
 
     QMap<int, Sprite *> usedSprites;
     void loadSprites(const QRPGDao::QRPGProject *project);

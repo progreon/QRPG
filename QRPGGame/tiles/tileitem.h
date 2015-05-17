@@ -13,12 +13,13 @@ class TileItem : public GraphicsItem
 public:
     TileItem(Sprite *sprite, QObject *parent = 0);
     ~TileItem();
-    int getTileSize() const {return tileSize;}
+    int getTileSize() const;
 
 private:
     int tileSize;
 
     Sprite *sprite;
+//    Sprite spriteCopy;
 
     // GraphicsItem interface
 public:

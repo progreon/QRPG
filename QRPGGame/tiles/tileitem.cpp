@@ -5,12 +5,17 @@ QRPG::TileItem::TileItem(QRPG::Sprite *sprite, QObject *parent)
     : GraphicsItem(parent)
     , sprite(sprite)
 {
-
+    tileSize = sprite->pixmap()->width();
 }
 
 QRPG::TileItem::~TileItem()
 {
 
+}
+
+int QRPG::TileItem::getTileSize() const
+{
+    return tileSize;
 }
 
 QRectF QRPG::TileItem::boundingRect() const

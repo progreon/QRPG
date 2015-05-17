@@ -14,8 +14,13 @@ Sprite::Sprite(QRPGGame *game, const QRPGDao::QRPGSprite *sprite)
 {
     this->game = game;
     spriteFrames = sprite->spriteFrames();
+//    for (int i=0; i<spriteFrames.size(); i++) {
+//        spriteFramesCopy.append(QPixmap(*(spriteFrames.value(i))));
+//    }
     fps = sprite->fps();
     spriteID = sprite->ID();
+
+//    qDebug() << "sprite" << spriteID << "with" << spriteFrames.size() << "frames";
 
     _frameIndex = 0;
     _ticksPassed = 0;
@@ -37,6 +42,13 @@ void Sprite::doTick()
             _frameIndex = 0;
         }
     }
+}
+
+const QPixmap *Sprite::pixmap() const
+{
+//    qDebug() << "getting sprite with index" << _frameIndex;
+    return spriteFrames.value(_frameIndex);
+//    return &(spriteFramesCopy[_frameIndex]);
 }
 
 } // namespace QRGP
