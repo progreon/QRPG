@@ -112,22 +112,35 @@ void QRPGFileDao::importTiles(QRPGProject *project, const QString &tilesFolderUR
             line = line.trimmed();
             if (!line.isEmpty() && !line.startsWith('#')) {
                 QStringList lineargs = line.split(";");
-                if (lineargs.length() == 5) {
+                if (lineargs.length() >= 5) {
+                    qDebug() << "#lineargs:" << lineargs.length();
                     int id = lineargs.at(0).toInt();
                     QString name = lineargs.at(1);
                     QString file = lineargs.at(2);
-                    int x = lineargs.at(3).toInt();
-                    int y = lineargs.at(4).toInt();
-                    qDebug() << "creating tile " << id << ": " << name << "(" << file << ": (" << x << "," << y << "))";
                     QPixmap spritesheet(tilesFolderURI + file);
-                    QPixmap spriteframe = spritesheet.copy(x, y, 8, 8);
-//                    sprites.insert(id, sprite);
                     QRPGDao::QRPGSprite *sprite = new QRPGDao::QRPGSprite(id);
-                    sprite->addSpriteFrame(spriteframe);
+                    int i = 4;
+                    while (i < lineargs.length()) {
+                        int x = lineargs.at(i - 1).toInt();
+                        int y = lineargs.at(i - 0).toInt();
+                        QPixmap spriteframe = spritesheet.copy(x, y, 8, 8);
+                        sprite->addSpriteFrame(spriteframe);
+                        qDebug() << "creating spriteframe " << id << ": " << name << "(" << file << ": (" << x << "," << y << "))";
+                        qDebug() << spriteframe;
+                        i += 2;
+                    }
+                    if (i == lineargs.length()) {
+                        sprite->setFps(lineargs.at(i - 1).toDouble());
+                    } else if (sprite->spriteFrames().size() > 1) {
+                        sprite->setFps(1);
+                    }
+
+//                    int x = lineargs.at(3).toInt();
+//                    int y = lineargs.at(4).toInt();
+//                    sprites.insert(id, sprite);
                     project->addNewSprite(sprite);
                     QRPGTile *newTile = new QRPGTile(id, name, sprite);
                     project->addNewTile(newTile);
-                    qDebug() << spriteframe;
                 }
             }
         }

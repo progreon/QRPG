@@ -170,8 +170,9 @@ void QRPG::QRPGGame::run()
 
 void QRPG::QRPGGame::tick()
 {
-    foreach (Sprite *sprite, usedSprites) {
+    foreach (Sprite *sprite, usedSprites.values()) {
         sprite->doTick();
+//        qDebug() << "sprite-tick!";
     }
 //    map.doTick();
     handleInput();
