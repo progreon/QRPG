@@ -10,7 +10,7 @@ QRPGProject::QRPGProject(QRPGDatabase *dao, QString projectFolderURI, QString pr
     , _projectTitle(projectTitle)
     , _gameTitle(gameTitle)
 {
-    _tileSize = 8;
+    _tileSize = 1;
 }
 
 QRPGProject::~QRPGProject()

@@ -5,6 +5,8 @@
 #include <QString>
 #include <QMap>
 #include "../qrpgdatabase.h"
+#include "../impl/qrpgdummydao.h"
+#include "../impl/qrpgfiledao.h"
 #include "qrpgsprite.h"
 #include "qrpgtile.h"
 #include "qrpgmap.h"

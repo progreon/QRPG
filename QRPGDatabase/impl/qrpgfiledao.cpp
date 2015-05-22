@@ -3,7 +3,9 @@
 #include <assert.h>
 #include <QDebug>
 #include <QFile>
-#include <QTextStream>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonArray>
 #include "../model/qrpgproject.h"
 #include "../model/qrpgsprite.h"
 #include "../model/qrpgtile.h"
@@ -12,7 +14,8 @@
 namespace QRPGDao {
 namespace Impl {
 
-const QString QRPGFileDao::relProjectFile = "project.qrpg";
+//const QString QRPGFileDao::relProjectFile = "project.qrpg";
+const QString QRPGFileDao::relProjectFile = "qrpgproject";
 
 QRPGFileDao::QRPGFileDao()
 {
@@ -24,127 +27,89 @@ void QRPGFileDao::importMaps(QRPGProject *project, const QString &mapsFolderURI,
     // TODO: mapsfolder + / for sure!
     // get all maps
     QFile mapsFile(mapsFileURI);
-    if (mapsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QTextStream mapsIn(&mapsFile);
-        while (!mapsIn.atEnd()) {
-            QString mapsLine = mapsIn.readLine();
-            mapsLine = mapsLine.trimmed();
-            if (!mapsLine.isEmpty() && !mapsLine.startsWith('#')) {
-                QStringList mapargs = mapsLine.split(";");
-                if (mapargs.length() == 3) {
-                    int mapID = mapargs.at(0).toInt();
-                    QString mapTitle = mapargs.at(1);
-                    QString mapFileURI = mapargs.at(2);
+    if (mapsFile.open(QIODevice::ReadOnly)) {
+        QJsonObject jsonObject = QJsonDocument(QJsonDocument::fromJson(mapsFile.readAll())).object();
+        QJsonArray maps = jsonObject["maps"].toArray();
+        for (int i=0; i<maps.count(); i++) {
+            QJsonObject jsonMapEntry = maps.at(i).toObject();
+            int mapID = jsonMapEntry["id"].toInt();
+            QString mapTitle = jsonMapEntry["title"].toString();
 
-                    // TODO: in aparte methode??
-                    int width = 0;
-                    int height = 0;
+            QString mapFileURI = jsonMapEntry["file"].toString();
+            QFile mapFile(mapsFolderURI + mapFileURI);
+            if (mapFile.open(QIODevice::ReadOnly)) {
+                QJsonDocument jsonMapDoc(QJsonDocument::fromJson(mapFile.readAll()));
+                QJsonObject mapObject = jsonMapDoc.object();
+                int width = mapObject["width"].toInt();
+                int height = mapObject["height"].toInt();
+                QRPGMap *newMap = new QRPGMap(project, mapID, mapTitle, width, height);
 
-                    QVector<QVector<QVector<QRPGTile *> > > tiles;
-                    tiles.resize(3); // 3 layers (for now)
-
-                    //    QString mapFileURI;
-                    QFile mapFile(mapsFolderURI + mapFileURI);
-                    if (mapFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                        QTextStream in(&mapFile);
-                        while (!in.atEnd()) {
-                            QString line = in.readLine();
-                            line = line.trimmed();
-                            if (!line.isEmpty() && !line.startsWith('#')) {
-                                QStringList lineargs = line.split(";");
-                                if (lineargs.length() == 4) {
-                                    int layer = lineargs.at(0).toInt();
-                                    int x = lineargs.at(1).toInt();
-                                    int y = lineargs.at(2).toInt();
-                                    if (x+1 > width) {
-                                        width = x+1;
-                                        for (int l=0; l<tiles.size(); l++) {
-                                            tiles[l].resize(width);
-                                            for (int w=width-1; w>tiles[l][w].size(); w--) {
-                                                tiles[l][w].resize(height);
-                                            }
-                                        }
-                                    }
-                                    if (y+1 > height) {
-                                        height = y+1;
-                                        for (int l=0; l<tiles.size(); l++) {
-                                            for (int w=0; w<tiles[l].size(); w++) {
-                                                tiles[l][w].resize(height);
-                                            }
-                                        }
-                                    }
-                                    int tileID = lineargs.at(3).toInt();
-                                    qDebug() << "layer " << layer << ": (" << x << "," << y << ") = " << tileID;
-//                                    qDebug() << "tiles.size" << tiles.size();
-//                                    qDebug() << "tiles[layer].size" << tiles[layer].size();
-//                                    qDebug() << "tiles[layer][x].size" << tiles[layer][x].size();
-//                                    qDebug() << "project->tiles().size" << project->tiles().size();
-                                    tiles[layer][x][y] = project->tiles().value(tileID);
-                                }
-                            }
-                        }
-                        mapFile.close();
-                    }
-                    QRPGMap *newMap = new QRPGMap(project, mapID, mapTitle, width, height);
-                    for (int l=0; l<tiles.size(); l++) {
-                        for (int x=0; x<tiles[l].size(); x++) {
-                            for (int y=0; y<tiles[l][x].size(); y++) {
-                                newMap->setTile(l, x, y, tiles[l][x][y]);
+                QJsonArray jsonTileArray = mapObject["tiles"].toArray();
+                for (int j=0; j<jsonTileArray.count(); j++) {
+                    QJsonObject jsonTileLayer = jsonTileArray.at(j).toObject();
+                    int layer = jsonTileLayer["layer"].toInt();
+                    QJsonArray tileYArray = jsonTileLayer["ids"].toArray();
+                    for (int y=0; y<tileYArray.count(); y++) {
+                        QJsonArray tileXArray = tileYArray.at(y).toArray();
+                        for (int x=0; x<tileXArray.count(); x++) {
+                            int tileID = tileXArray.at(x).toInt(-1);
+                            if (tileID >= 0 && project->tiles().contains(tileID)) {
+                                qDebug() << "layer " << layer << ": (" << x << "," << y << ") = " << tileID;
+                                newMap->setTile(layer, x, y, project->tiles().value(tileID));
                             }
                         }
                     }
-                    project->addNewMap(newMap);
                 }
+                project->addNewMap(newMap);
+
+                mapFile.close();
+            } else {
+                qWarning() << "Could not open map file!" << mapFile.fileName();
             }
         }
         mapsFile.close();
+    } else {
+        qWarning() << "Could not open maps file!" << mapsFile.fileName();
     }
 }
 
 void QRPGFileDao::importTiles(QRPGProject *project, const QString &tilesFolderURI, const QString &tilesFileURI)
 {
-//    QDir tilesFolder(tilesFolderURI);
     QFile tilesFile(tilesFileURI);
-    if (tilesFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QTextStream in(&tilesFile);
-        while (!in.atEnd()) {
-            QString line = in.readLine();
-            line = line.trimmed();
-            if (!line.isEmpty() && !line.startsWith('#')) {
-                QStringList lineargs = line.split(";");
-                if (lineargs.length() >= 5) {
-                    qDebug() << "#lineargs:" << lineargs.length();
-                    int id = lineargs.at(0).toInt();
-                    QString name = lineargs.at(1);
-                    QString file = lineargs.at(2);
-                    QPixmap spritesheet(tilesFolderURI + file);
-                    QRPGDao::QRPGSprite *sprite = new QRPGDao::QRPGSprite(id);
-                    int i = 4;
-                    while (i < lineargs.length()) {
-                        int x = lineargs.at(i - 1).toInt();
-                        int y = lineargs.at(i - 0).toInt();
-                        QPixmap spriteframe = spritesheet.copy(x, y, 8, 8);
-                        sprite->addSpriteFrame(spriteframe);
-                        qDebug() << "creating spriteframe " << id << ": " << name << "(" << file << ": (" << x << "," << y << "))";
-                        qDebug() << spriteframe;
-                        i += 2;
-                    }
-                    if (i == lineargs.length()) {
-                        sprite->setFps(lineargs.at(i - 1).toDouble());
-                    } else if (sprite->spriteFrames().size() > 1) {
-                        sprite->setFps(1);
-                    }
-
-//                    int x = lineargs.at(3).toInt();
-//                    int y = lineargs.at(4).toInt();
-//                    sprites.insert(id, sprite);
-                    project->addNewSprite(sprite);
-                    QRPGTile *newTile = new QRPGTile(id, name, sprite);
-                    project->addNewTile(newTile);
-                }
+    if (tilesFile.open(QIODevice::ReadOnly)) {
+        QJsonObject jsonObject = QJsonDocument(QJsonDocument::fromJson(tilesFile.readAll())).object();
+        QJsonArray tiles = jsonObject["tiles"].toArray();
+        for (int i=0; i<tiles.count(); i++) {
+            // Tile info
+            QJsonObject jsonTile = tiles.at(i).toObject();
+            int id = jsonTile["id"].toInt();
+            QString name = jsonTile["name"].toString();
+            // Sprite
+            QJsonObject jsonSprite = jsonTile["sprite"].toObject();
+            QString file = jsonSprite["file"].toString();
+            QPixmap spritesheet(tilesFolderURI + file);
+            QRPGDao::QRPGSprite *sprite = new QRPGDao::QRPGSprite(id);
+            QJsonArray jsonFrames = jsonSprite["frames"].toArray();
+            for (int j=0; j<jsonFrames.count(); j++) {
+                QJsonObject jsonFrame = jsonFrames.at(j).toObject();
+                int x = jsonFrame["x"].toInt();
+                int y = jsonFrame["y"].toInt();
+                QPixmap spriteframe = spritesheet.copy(x, y, 8, 8);
+                sprite->addSpriteFrame(spriteframe);
+                qDebug() << "creating spriteframe " << id << ": " << name << "(" << file << ": (" << x << "," << y << "))";
+                qDebug() << spriteframe;
             }
+            if (sprite->spriteFrames().count() > 1) {
+                sprite->setFps(jsonSprite.value("fps").toDouble(1.0));
+            }
+            project->addNewSprite(sprite);
+            // Add tile to project
+            QRPGTile *newTile = new QRPGTile(id, name, sprite);
+            project->addNewTile(newTile);
         }
         tilesFile.close();
+    } else {
+        qWarning() << "Could not open tiles file!" << tilesFile.fileName();
     }
 }
 
@@ -156,36 +121,25 @@ void QRPGFileDao::initProjectFromFile(QRPGProject *project)
         if (!projDirURI.endsWith('/')) {
             projDirURI.append("/");
         }
-        //        QDir projectDir(projDirURI);
         QFile projectFile(projDirURI + relProjectFile);
         qDebug() << projectFile.fileName();
         // reading project file
-        if (projectFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        if (projectFile.open(QIODevice::ReadOnly)) {
+            int tileSize;
             QString tilesFolderURI;
             QString tilesFileURI;
             QString mapsFolderURI;
             QString mapsFileURI;
-            QTextStream io(&projectFile);
-            while (!io.atEnd()) {
-                QString line = io.readLine();
-                if (!line.isEmpty() && !line.startsWith('#')) {
-                    qDebug() << line;
-                    QStringList lineargs = line.split(";");
-                    if (lineargs.length() > 0) {
-                        if (lineargs.at(0).compare("tilesize") == 0) {
-                            setProjectTileSize(project, lineargs.at(1).toInt());
-                        } else if (lineargs.at(0).compare("tilesfolder") == 0) {
-                            tilesFolderURI = projDirURI + lineargs.at(1);
-                        } else if (lineargs.at(0).compare("tilesfile") == 0) {
-                            tilesFileURI = tilesFolderURI + lineargs.at(1);
-                        } else if (lineargs.at(0).compare("mapsfolder") == 0) {
-                            mapsFolderURI = projDirURI + lineargs.at(1);
-                        } else if (lineargs.at(0).compare("mapsfile") == 0) {
-                            mapsFileURI = mapsFolderURI + lineargs.at(1);
-                        }
-                    }
-                }
-            }
+
+            QJsonObject jsonObj = QJsonDocument(QJsonDocument::fromJson(projectFile.readAll())).object();
+            tileSize = jsonObj["tilesize"].toInt();
+            tilesFolderURI = projDirURI + jsonObj["tilesfolder"].toString();
+            tilesFileURI = tilesFolderURI + jsonObj["tilesfile"].toString();
+            mapsFolderURI = projDirURI + jsonObj["mapsfolder"].toString();
+            mapsFileURI = mapsFolderURI + jsonObj["mapsfile"].toString();
+
+            setProjectTileSize(project, tileSize);
+
             qDebug() << "project file:" << projectFile.fileName();
             qDebug() << "tile size:" << project->tileSize();
             qDebug() << "tiles folder:" << tilesFolderURI;
@@ -202,7 +156,7 @@ void QRPGFileDao::initProjectFromFile(QRPGProject *project)
 
             projectFile.close();
         } else {
-            qDebug() << "Failed to open project file!";
+            qWarning() << "Could not open project file!" << projectFile.fileName();
         }
     }
 }

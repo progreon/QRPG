@@ -1,0 +1,10 @@
+{
+	"version": 0.0,
+	"maps": [
+		{
+			"id": 0,
+			"title": "JSON Sample Map",
+			"file": "jsonmapsample.qrpgmap"
+		}
+	]
+}

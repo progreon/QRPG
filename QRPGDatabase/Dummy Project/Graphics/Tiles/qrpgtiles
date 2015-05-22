@@ -1,0 +1,82 @@
+{
+	"version": 0.0,
+	"tiles": [
+		{
+			"id": 0,
+			"name": "void",
+			"layers": [
+				0
+			],
+			"sprite": {
+				"file": "basictiles.png",
+				"frames": [
+					{
+						"x": 0,
+						"y": 0
+					}
+				]
+			}
+		},
+		{
+			"id": 1,
+			"name": "stone",
+			"layers": [
+				0
+			],
+			"sprite": {
+				"file": "basictiles.png",
+				"frames": [
+					{
+						"x": 8,
+						"y": 0
+					}
+				]
+			}
+		},
+		{
+			"id": 2,
+			"name": "water",
+			"layers": [
+				0
+			],
+			"sprite": {
+				"file": "basictiles.png",
+				"frames": [
+					{
+						"x": 16,
+						"y": 0
+					},
+					{
+						"x": 16,
+						"y": 8
+					},
+					{
+						"x": 16,
+						"y": 16
+					},
+					{
+						"x": 16,
+						"y": 24
+					}
+				],
+				"fps": 2.0
+			}
+		},
+		{
+			"id": 3,
+			"name": "grass",
+			"layers": [
+				0
+			],
+			"sprite": {
+				"file": "basictiles.png",
+				"frames": [
+					{
+						"x": 24,
+						"y": 0
+					}
+				]
+			}
+		}
+	]
+}

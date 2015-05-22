@@ -1,0 +1,8 @@
+{
+	"version": 0.0,
+	"tilesize": 8,
+	"tilesfolder": "Graphics/Tiles/",
+	"tilesfile": "qrpgtiles",
+	"mapsfolder": "Maps/",
+	"mapsfile": "qrpgmaps"
+}
