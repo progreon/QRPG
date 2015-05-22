@@ -27,7 +27,7 @@ void QRPG::QRPGScreen::setScene(QRPGScene *scene)
     if (nextBuffer != NULL) delete nextBuffer;
     currentBuffer = new QPixmap(scaledRect().width(), scaledRect().height());
     nextBuffer = new QPixmap(scaledRect().width(), scaledRect().height());
-    setScreenPos(0, 0);
+//    setScreenPos(0, 0);
 }
 
 void QRPG::QRPGScreen::centerScreenOn(qreal x, qreal y)

@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
 
     MainWindow w;
     w.show();
+    w.startGame();
 
     return a.exec();
 //    return 0;

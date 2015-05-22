@@ -25,6 +25,7 @@ public:
     void keyPressed(int key);
     void keyReleased(int key);
     void openGameProject(const QRPGDao::QRPGProject *project);
+    void openMap(int mapID);
     void setupThread(QThread *gameThread);
     Sprite *sprite(int ID) const;
     const QMap<int, Sprite *> sprites() const {return usedSprites;}

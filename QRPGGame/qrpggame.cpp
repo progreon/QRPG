@@ -43,16 +43,25 @@ void QRPG::QRPGGame::openGameProject(const QRPGDao::QRPGProject *project)
     // TODO !!
 //    this->stop();
     qDebug() << "opening project ...";
-    if (map != NULL) delete map;
+//    if (map != NULL) delete map;
     if (project != NULL) {
         currProject = project;
         loadSprites(currProject);
-        map = mapLoader.newMap(currProject->maps().value(0));
-    //    map = mapLoader.newExampleMap();
+//        openMap(0);
+    }
+    qDebug() << "done opening project";
+}
+
+void QRPG::QRPGGame::openMap(int mapID)
+{
+    if (currProject != NULL) {
+        MapScene *newMapScene = mapLoader.newMap(currProject->maps().value(mapID));
+        MapScene *tempMap = map;
+        map = newMapScene;
+        if (tempMap != NULL) delete tempMap;
         screen->setScene(map);
         screen->centerScreenOn(0, 0);
     }
-    qDebug() << "done opening project";
 }
 
 void QRPG::QRPGGame::setupThread(QThread *gameThread)

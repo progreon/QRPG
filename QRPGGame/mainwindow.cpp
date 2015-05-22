@@ -21,13 +21,21 @@ MainWindow::MainWindow(QWidget *parent) :
     game->openGameProject(dummyProject);
     game->setupThread(&gameThread);
     game->moveToThread(&gameThread);
-    gameThread.start();
+//    gameThread.start();
+//    game->openMap(0);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
     if (game != NULL) delete game;
+}
+
+void MainWindow::startGame()
+{
+    gameThread.start();
+    game->openMap(0);
+
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *ke)
