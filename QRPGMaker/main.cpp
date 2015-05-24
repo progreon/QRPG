@@ -10,9 +10,9 @@ int main(int argc, char *argv[])
     Q_INIT_RESOURCE(files);
     QApplication a(argc, argv);
 
-    QRPGDao::QRPGDatabase *dao = QRPGDao::newDao(QRPGDao::FILE);
+    QRPGDao::QRPGDatabase *dao = QRPGDao::newDao();
     assert(dao != NULL);
-    qDebug() << dao->getInfo();
+    qDebug() << dao->info();
     MainWindow w(dao);
     w.show();
 

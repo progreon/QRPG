@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     game = new QRPG::QRPGGame(screen);
     this->setCentralWidget(screen);
 //    connect(game, SIGNAL(render()), screen, SLOT(doRender()));
-    QRPGDao::QRPGDatabase *dao = QRPGDao::newDao(QRPGDao::FILE);
+    QRPGDao::QRPGDatabase *dao = QRPGDao::newDao();
     QRPGDao::QRPGProject *dummyProject = dao->openDummyProject();
     game->openGameProject(dummyProject);
     game->setupThread(&gameThread);

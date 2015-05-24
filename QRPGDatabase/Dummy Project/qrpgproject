@@ -1,8 +1,9 @@
 {
-	"version": 0.0,
-	"tilesize": 8,
-	"tilesfolder": "Graphics/Tiles/",
-	"tilesfile": "qrpgtiles",
+	"gametitle": "Dummy Game",
+	"mapsfile": "qrpgmaps",
 	"mapsfolder": "Maps/",
-	"mapsfile": "qrpgmaps"
+	"tilesfile": "qrpgtiles",
+	"tilesfolder": "Graphics/Tiles/",
+	"tilesize": 8,
+	"version": 0.0
 }

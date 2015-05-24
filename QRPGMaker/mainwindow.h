@@ -19,6 +19,12 @@ public:
 private slots:
     void on_action_New_project_triggered();
 
+    void on_action_Open_project_triggered();
+
+    void on_action_Close_project_triggered();
+
+    void on_actionE_xit_triggered();
+
 private:
     Ui::MainWindow *ui;
     QRPGDao::QRPGDatabase *dao;

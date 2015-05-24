@@ -3,7 +3,6 @@
 
 #include <QString>
 #include <QDir>
-//#include <QList>
 
 namespace QRPGDao {
 
@@ -16,13 +15,13 @@ class QRPGDatabase
 {
 
 public:
-    virtual QRPGProject *createNewProject(const QDir &projectLocationDir, const QString &projectTitle, const QString &gameTitle) = 0;
+    virtual void closeProject() = 0;
+    virtual QRPGProject *createNewProject(const QString &projectLocationURI, const QString &projectTitle, const QString &gameTitle) = 0;
+    virtual QString info() const = 0; // Tells you what kind of Dao this is
     virtual QRPGProject *openDummyProject() = 0;
     virtual QRPGProject *openProjectDir(const QString &projectDirURI) = 0;
 //    virtual QRPGProject *openProjectFile(QString projectFileURI) = 0;
 //    virtual QList<QRPGProject *> getOpenProjects() const = 0;
-    virtual void closeProject(const QString &projectDirURI) = 0;
-    virtual QString getInfo() const = 0; // Tells you what kind of Dao this is
 
 protected:
     QRPGProject *newProject(const QString &projectDirURI, const QString &projectTitle, const QString &gameTitle);
@@ -31,11 +30,10 @@ protected:
 
 enum DaoType
 {
-    DUMMY,
     FILE
 };
 
-QRPGDatabase *newDao(DaoType daoType = FILE);
+QRPGDatabase *newDao();
 
 } // namespace QRPGDao
 

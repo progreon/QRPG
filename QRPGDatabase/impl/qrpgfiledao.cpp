@@ -113,6 +113,55 @@ void QRPGFileDao::importTiles(QRPGProject *project, const QString &tilesFolderUR
     }
 }
 
+void QRPGFileDao::initMapsDir(const QDir &mapsDir)
+{
+    QString mapsFileRelURI = "qrpgmaps";
+    if (mapsDir.exists()) {
+        QFile mapsFile(mapsDir.canonicalPath() + QDir::separator() + mapsFileRelURI);
+        if (mapsFile.open(QFile::WriteOnly)) {
+            QJsonObject jsonObj;
+            jsonObj["version"] = 0.0;
+            jsonObj["maps"] = QJsonArray();
+            QJsonDocument jsonDoc(jsonObj);
+            mapsFile.write(jsonDoc.toJson(QJsonDocument::Indented));
+            mapsFile.close();
+        } else {
+            qWarning() << "Failed to create/open the new tiles file!" << mapsFile.fileName();
+        }
+    } else {
+        qWarning() << "The tiles directory doesn't exist!" << mapsDir.canonicalPath();
+    }
+}
+
+void QRPGFileDao::initProjectFile(const QDir &projectDir, const QString &gameTitle, int tileSize)
+{
+    QString projectFileRelURI("qrpgproject");
+    QString tilesFolder("Graphics/Tiles/");
+    QString tilesFile("qrpgtiles");
+    QString mapsFolder("Maps/");
+    QString mapsFile("qrpgmaps");
+    if (projectDir.exists()) {
+        QFile projectFile(projectDir.canonicalPath() + QDir::separator() + projectFileRelURI);
+        if (projectFile.open(QFile::WriteOnly)) {
+            QJsonObject jsonObj;
+            jsonObj["version"] = 0.0;
+            jsonObj["tilesize"] = tileSize;
+            jsonObj["gametitle"] = gameTitle;
+            jsonObj["tilesfolder"] = tilesFolder;
+            jsonObj["tilesfile"] = tilesFile;
+            jsonObj["mapsfolder"] = mapsFolder;
+            jsonObj["mapsfile"] = mapsFile;
+            QJsonDocument jsonDoc(jsonObj);
+            projectFile.write(jsonDoc.toJson(QJsonDocument::Indented));
+            projectFile.close();
+        } else {
+            qWarning() << "Failed to create/open the new tiles file!" << projectFile.fileName();
+        }
+    } else {
+        qWarning() << "The tiles directory doesn't exist!" << projectDir.canonicalPath();
+    }
+}
+
 void QRPGFileDao::initProjectFromFile(QRPGProject *project)
 {
     qDebug() << "init project from project file";
@@ -126,6 +175,7 @@ void QRPGFileDao::initProjectFromFile(QRPGProject *project)
         // reading project file
         if (projectFile.open(QIODevice::ReadOnly)) {
             int tileSize;
+            QString gameTitle;
             QString tilesFolderURI;
             QString tilesFileURI;
             QString mapsFolderURI;
@@ -133,15 +183,18 @@ void QRPGFileDao::initProjectFromFile(QRPGProject *project)
 
             QJsonObject jsonObj = QJsonDocument(QJsonDocument::fromJson(projectFile.readAll())).object();
             tileSize = jsonObj["tilesize"].toInt();
+            gameTitle = jsonObj["gametitle"].toString();
             tilesFolderURI = projDirURI + jsonObj["tilesfolder"].toString();
             tilesFileURI = tilesFolderURI + jsonObj["tilesfile"].toString();
             mapsFolderURI = projDirURI + jsonObj["mapsfolder"].toString();
             mapsFileURI = mapsFolderURI + jsonObj["mapsfile"].toString();
 
+            project->setGameTitle(gameTitle);
             setProjectTileSize(project, tileSize);
 
             qDebug() << "project file:" << projectFile.fileName();
             qDebug() << "tile size:" << project->tileSize();
+            qDebug() << "game title:" << gameTitle;
             qDebug() << "tiles folder:" << tilesFolderURI;
             qDebug() << "tiles file:" << tilesFileURI;
             qDebug() << "maps folder:" << mapsFolderURI;
@@ -161,47 +214,89 @@ void QRPGFileDao::initProjectFromFile(QRPGProject *project)
     }
 }
 
+void QRPGFileDao::initTilesDir(const QDir &tilesDir)
+{
+    QString tilesFileRelURI = "qrpgtiles";
+    if (tilesDir.exists()) {
+        QFile tilesFile(tilesDir.canonicalPath() + QDir::separator() + tilesFileRelURI);
+        if (tilesFile.open(QFile::WriteOnly)) {
+            QJsonObject jsonObj;
+            jsonObj["version"] = 0.0;
+            jsonObj["tiles"] = QJsonArray();
+            QJsonDocument jsonDoc(jsonObj);
+            tilesFile.write(jsonDoc.toJson(QJsonDocument::Indented));
+            tilesFile.close();
+        } else {
+            qWarning() << "Failed to create/open the new tiles file!" << tilesFile.fileName();
+        }
+    } else {
+        qWarning() << "The tiles directory doesn't exist!" << tilesDir.canonicalPath();
+    }
+}
+
 QRPGFileDao::~QRPGFileDao()
 {
+    if (currentProject != NULL) delete currentProject;
     //    foreach (QRPGDao::QRPGProject *proj, openProjects.values()) {
     //        delete proj;
     //    }
     //    openProjects.clear();
 }
 
-QRPGProject *QRPGFileDao::createNewProject(const QDir &projectLocationDir, const QString &projectTitle, const QString &gameTitle)
+QRPGProject *QRPGFileDao::createNewProject(const QString &projectLocationURI, const QString &projectTitle, const QString &gameTitle)
 {
-    // TODO: error handling??
+    qDebug() << "Creating new project:" << projectTitle << "in" << projectLocationURI << "...";
+    QRPGProject *project = NULL;
+    int tileSize = 8;
+    // This dir object is used to walk through the directory structure of the project folder
+    QDir dir(projectLocationURI);
+    if (dir.exists()) {
+        qDebug() << "The project's location directory exists! :)" << dir.canonicalPath();
+        // Creating the directory structure
+        if (dir.mkdir(projectTitle)) {
+            dir.cd(projectTitle);
+            // Audio directory
+                dir.mkdir("Audio");
+                    dir.cd("Audio");
+                    dir.mkdir("Background");
+                    dir.mkdir("Effects");
+                dir.cdUp();
+                // Graphics directory
+                dir.mkdir("Graphics");
+                    dir.cd("Graphics");
+                    dir.mkdir("Animations");
+                    dir.mkdir("Characters");
+                    dir.mkdir("System");
+                    dir.mkdir("GUI");
+                    dir.mkdir("Fonts");
+                    dir.mkdir("Scenes");
+                    dir.mkdir("Tiles");
+                        dir.cd("Tiles");
+                        initTilesDir(dir);
+                    dir.cdUp();
+                dir.cdUp();
+                // Maps directory
+                dir.mkdir("Maps");
+                    dir.cd("Maps");
+                    initMapsDir(dir);
+                dir.cdUp();
+                dir.mkdir("System");
+                    dir.cd("System");
+                    dir.mkdir("lib");
+                    // TODO: copy libraries
+                    // TODO: copy QRPGGame
+                dir.cdUp();
+                initProjectFile(dir, gameTitle, tileSize);
+                // TODO: start script
 
-    //    QDir projectLocationDir(projectDirLocation); // The directory the project directory will be in
-    if (projectLocationDir.exists()) {
-        if (projectLocationDir.mkdir(projectTitle)) {
-            QDir projectDir(projectLocationDir);
-            assert(projectDir.cd(projectTitle));
-            qDebug() << "Project directory: " << projectDir.absolutePath();
-
-            // Create project file
-            QFile projectFile(projectDir.absolutePath().append(QDir::separator()).append(projectTitle).append(".qrpg"));
-            projectFile.open(QIODevice::ReadWrite);
-            //            projectFile.write("test");
-            projectFile.close();
-
-            // Creating subdirectories
-            projectDir.mkdir("Maps");
-            // Done creating subdirectories
-
-            QString projectFolderURI = projectDir.absolutePath();
-            QRPGProject *proj = this->newProject(projectFolderURI, projectTitle, gameTitle);
-            openProjects.insert(projectFolderURI, proj);
-            return proj;
+                project = openProjectDir(dir.canonicalPath());
         } else {
-            qWarning() << "Failed to create project dir: " << projectLocationDir.absolutePath();
-            return NULL;
+            qWarning() << "Failed to create a new project directory!";
         }
     } else {
-        qWarning() << "The directory you're trying to create the project in does not exist: " << projectLocationDir.absolutePath();
-        return NULL;
+        qWarning() << "The project's location directory doesn't exist!" << dir.canonicalPath();
     }
+    return project;
 }
 
 QRPGProject *QRPGFileDao::openDummyProject()
@@ -217,28 +312,33 @@ QRPGProject *QRPGFileDao::openProjectDir(const QString &projectDirURI)
     QDir projectDir(projectDirURI); // Used to create subfolders!
 
     if (projectDir.exists()) {
+        // TODO: project titel?
         proj = this->newProject(projectDirURI, "projectTitle", "gameTitle");
-        // TODO: project inladen in geheugen!
         // project-file openen
         initProjectFromFile(proj);
         //        openProjects.insert(projectDirURI, proj);
     } else {
         qDebug() << "project folder " << projectDirURI << " does not exist!";
     }
+    currentProject = proj;
     return proj;
 }
 
-void QRPGFileDao::closeProject(const QString &projectDirURI)
+void QRPGFileDao::closeProject()
 {
-    QMap<QString, QRPGDao::QRPGProject *>::const_iterator projIt = openProjects.find(projectDirURI);
-    if (projIt != openProjects.end()) {
-        QRPGDao::QRPGProject *proj = projIt.value();
-        openProjects.remove(projIt.key());
-        delete proj;
+    if (currentProject != NULL) {
+        delete currentProject;
+        currentProject = NULL;
     }
+//    QMap<QString, QRPGDao::QRPGProject *>::const_iterator projIt = openProjects.find(projectDirURI);
+//    if (projIt != openProjects.end()) {
+//        QRPGDao::QRPGProject *proj = projIt.value();
+//        openProjects.remove(projIt.key());
+//        delete proj;
+//    }
 }
 
-QString QRPGFileDao::getInfo() const
+QString QRPGFileDao::info() const
 {
     return "This is the file-based dao.";
 }
