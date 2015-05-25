@@ -27,15 +27,6 @@ void QRPG::QRPGScene::render(QPixmap *screen, const QPointF &pos)
                 }
             }
         }
-
-//        for (int i = 0; i < usedLayers.length(); i++) {
-//            foreach (GraphicsItem *item, itemsPerLayer.value(usedLayers.at(i))) {
-//                // if (itemIsInRect(screen->rect(), item)) {
-//                if (itemIsInRect(screenRect, item)) {
-//                    painter.drawPixmap(item->pos() - pos, *(item->pixmap()), item->boundingRect());
-//                }
-//            }
-//        }
         painter.end();
     }
 }
@@ -49,10 +40,6 @@ bool QRPG::QRPGScene::addGraphicsItem(GraphicsItem *item, int layer)
         }
     }
     if (!exists) {
-//        if (!usedLayers.contains(layer)) {
-//            usedLayers.push_back(layer);
-//            std::sort(usedLayers.begin(), usedLayers.end());
-//        }
         itemsPerLayer[layer].insert(item);
     }
     return !exists;

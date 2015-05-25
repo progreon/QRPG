@@ -45,7 +45,6 @@ public slots:
 private:
 //    QMutex renderMutex;
 
-//    QVector<int> usedLayers; // To keep track of the layers used, and to be able to loop over them in order.
     QMap<int, QSet<GraphicsItem *> > itemsPerLayer;
     // TODO: needs optimisation?
     bool itemIsInRect(const QRectF &rect, const GraphicsItem *item) const;

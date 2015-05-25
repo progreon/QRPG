@@ -19,7 +19,6 @@ private:
     int tileSize;
 
     Sprite *sprite;
-//    Sprite spriteCopy;
 
     // GraphicsItem interface
 public:

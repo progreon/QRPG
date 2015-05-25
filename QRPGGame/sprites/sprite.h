@@ -18,7 +18,6 @@ namespace QRPG {
 class Sprite
 {
 public:
-//    Sprite(QVector<const QPixmap *> spriteFrames, qreal fps = 0);
     Sprite(QRPGGame *game, const QRPGDao::QRPGSprite *sprite);
     ~Sprite();
 
@@ -30,7 +29,6 @@ private:
 
 //    const QRPGDao::QRPGSprite *sprite;
     QVector<const QPixmap *> spriteFrames;
-//    QVector<QPixmap> spriteFramesCopy;
     qreal fps;
     int spriteID;
 

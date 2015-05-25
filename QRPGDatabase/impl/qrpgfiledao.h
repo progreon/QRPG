@@ -1,7 +1,6 @@
 #ifndef QRPGDAO_IMPL_QRPGFILEDAO_H
 #define QRPGDAO_IMPL_QRPGFILEDAO_H
 
-#include <QMap>
 #include <QDir>
 #include "qrpgdatabase.h"
 
@@ -19,8 +18,6 @@ private:
 
     QRPGFileDao();
     QRPGDao::QRPGProject *currentProject;
-    QMap<QString, QRPGDao::QRPGProject *> openProjects; // projectDirURI => project*
-    //            importTiles(project, tilesFolderURI, tilesFileURI);
     void importMaps(QRPGProject *project, const QString &mapsFolderURI, const QString &mapsFileURI);
     void importTiles(QRPGProject *project, const QString &tilesFolderURI, const QString &tilesFileURI);
     void initMapsDir(const QDir &mapsDir);

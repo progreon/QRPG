@@ -2,12 +2,8 @@
 #define QRPGDATABASE_H
 
 #include <QString>
-#include <QDir>
 
 namespace QRPGDao {
-
-//class QRPGDatabase;
-//typedef QRPGDatabase Dao;
 
 class QRPGProject;
 
@@ -20,8 +16,6 @@ public:
     virtual QString info() const = 0; // Tells you what kind of Dao this is
     virtual QRPGProject *openDummyProject() = 0;
     virtual QRPGProject *openProjectDir(const QString &projectDirURI) = 0;
-//    virtual QRPGProject *openProjectFile(QString projectFileURI) = 0;
-//    virtual QList<QRPGProject *> getOpenProjects() const = 0;
 
 protected:
     QRPGProject *newProject(const QString &projectDirURI, const QString &projectTitle, const QString &gameTitle);

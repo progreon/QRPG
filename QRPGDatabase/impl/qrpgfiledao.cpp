@@ -14,7 +14,6 @@
 namespace QRPGDao {
 namespace Impl {
 
-//const QString QRPGFileDao::relProjectFile = "project.qrpg";
 const QString QRPGFileDao::relProjectFile = "qrpgproject";
 
 QRPGFileDao::QRPGFileDao()
@@ -200,11 +199,9 @@ void QRPGFileDao::initProjectFromFile(QRPGProject *project)
             qDebug() << "maps folder:" << mapsFolderURI;
             qDebug() << "maps file:" << mapsFileURI;
             // import sprites & tiles
-            // TODO
             importTiles(project, tilesFolderURI, tilesFileURI);
 
             // import maps
-            // TODO
             importMaps(project, mapsFolderURI, mapsFileURI);
 
             projectFile.close();
@@ -237,10 +234,6 @@ void QRPGFileDao::initTilesDir(const QDir &tilesDir)
 QRPGFileDao::~QRPGFileDao()
 {
     if (currentProject != NULL) delete currentProject;
-    //    foreach (QRPGDao::QRPGProject *proj, openProjects.values()) {
-    //        delete proj;
-    //    }
-    //    openProjects.clear();
 }
 
 QRPGProject *QRPGFileDao::createNewProject(const QString &projectLocationURI, const QString &projectTitle, const QString &gameTitle)
@@ -312,11 +305,16 @@ QRPGProject *QRPGFileDao::openProjectDir(const QString &projectDirURI)
     QDir projectDir(projectDirURI); // Used to create subfolders!
 
     if (projectDir.exists()) {
-        // TODO: project titel?
-        proj = this->newProject(projectDirURI, "projectTitle", "gameTitle");
+        QString projectTitle(projectDir.canonicalPath());
+        if (projectTitle.endsWith('/')) {
+            projectTitle.resize(projectTitle.size()-1);
+        }
+        int i = projectTitle.lastIndexOf('/');
+        projectTitle.remove(0, i+1);
+        qDebug() << "project title:" << projectTitle;
+        proj = this->newProject(projectDirURI, projectTitle, "gameTitle");
         // project-file openen
         initProjectFromFile(proj);
-        //        openProjects.insert(projectDirURI, proj);
     } else {
         qDebug() << "project folder " << projectDirURI << " does not exist!";
     }
@@ -330,12 +328,6 @@ void QRPGFileDao::closeProject()
         delete currentProject;
         currentProject = NULL;
     }
-//    QMap<QString, QRPGDao::QRPGProject *>::const_iterator projIt = openProjects.find(projectDirURI);
-//    if (projIt != openProjects.end()) {
-//        QRPGDao::QRPGProject *proj = projIt.value();
-//        openProjects.remove(projIt.key());
-//        delete proj;
-//    }
 }
 
 QString QRPGFileDao::info() const

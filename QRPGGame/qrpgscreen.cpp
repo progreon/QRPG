@@ -88,9 +88,7 @@ void QRPG::QRPGScreen::resizeEvent(QResizeEvent *re)
 
 void QRPG::QRPGScreen::paintEvent(QPaintEvent *)
 {
-    //    qDebug() << "Screen::paintEvent(), width: " << rect().width() << ", height: " << rect().height();
     if (scene != NULL) {
-        //        QRectF drawRect = currentBuffer->rect().intersected(scene->boundingRect());
         if (currentBuffer != NULL) {
             QPainter painter(this);
             if (painter.isActive()) {

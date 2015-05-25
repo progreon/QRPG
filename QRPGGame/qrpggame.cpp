@@ -41,9 +41,7 @@ void QRPG::QRPGGame::keyReleased(int key)
 void QRPG::QRPGGame::openGameProject(const QRPGDao::QRPGProject *project)
 {
     // TODO !!
-//    this->stop();
     qDebug() << "opening project ...";
-//    if (map != NULL) delete map;
     if (project != NULL) {
         currProject = project;
         loadSprites(currProject);
@@ -74,10 +72,6 @@ QRPG::Sprite *QRPG::QRPGGame::sprite(int ID) const
 {
     return usedSprites.value(ID);
 }
-
-//void QRPG::Game::test()
-//{
-//}
 
 void QRPG::QRPGGame::handleInput()
 {
@@ -181,7 +175,6 @@ void QRPG::QRPGGame::tick()
 {
     foreach (Sprite *sprite, usedSprites.values()) {
         sprite->doTick();
-//        qDebug() << "sprite-tick!";
     }
 //    map.doTick();
     handleInput();

@@ -30,7 +30,6 @@ public:
     Sprite *sprite(int ID) const;
     const QMap<int, Sprite *> sprites() const {return usedSprites;}
     void stop();
-//    void test();
     qreal tps() const {return _tps;}
 
 signals:

@@ -21,8 +21,6 @@ MainWindow::MainWindow(QWidget *parent) :
     game->openGameProject(dummyProject);
     game->setupThread(&gameThread);
     game->moveToThread(&gameThread);
-//    gameThread.start();
-//    game->openMap(0);
 }
 
 MainWindow::~MainWindow()
