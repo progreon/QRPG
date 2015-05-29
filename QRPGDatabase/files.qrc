@@ -5,5 +5,7 @@
         <file>Dummy Project/Maps/jsonmapsample.qrpgmap</file>
         <file>Dummy Project/Maps/qrpgmaps</file>
         <file>Dummy Project/Graphics/Tiles/qrpgtiles</file>
+        <file>Dummy Project/Graphics/Tiles/qrpgtiles16</file>
+        <file>Dummy Project/Graphics/Tiles/basictiles16.png</file>
     </qresource>
 </RCC>

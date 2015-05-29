@@ -93,7 +93,7 @@ void QRPGFileDao::importTiles(QRPGProject *project, const QString &tilesFolderUR
                 QJsonObject jsonFrame = jsonFrames.at(j).toObject();
                 int x = jsonFrame["x"].toInt();
                 int y = jsonFrame["y"].toInt();
-                QPixmap spriteframe = spritesheet.copy(x, y, 8, 8);
+                QPixmap spriteframe = spritesheet.copy(x, y, project->tileSize(), project->tileSize());
                 sprite->addSpriteFrame(spriteframe);
                 qDebug() << "creating spriteframe " << id << ": " << name << "(" << file << ": (" << x << "," << y << "))";
                 qDebug() << spriteframe;

@@ -6,7 +6,7 @@
 
 QRPG::QRPGScreen::QRPGScreen(QWidget *parent) : QWidget(parent)
 {
-    _scale = 3.0;
+    _scale = 2.0;
     currentBuffer = 0;
     nextBuffer = 0;
     setScene(0);
