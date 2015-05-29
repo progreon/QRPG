@@ -18,11 +18,11 @@ private:
 
     QRPGFileDao();
     QRPGDao::QRPGProject *currentProject;
-    void importMaps(QRPGProject *project, const QString &mapsFolderURI, const QString &mapsFileURI);
-    void importTiles(QRPGProject *project, const QString &tilesFolderURI, const QString &tilesFileURI);
+    bool importMaps(QRPGProject *project, const QString &mapsFolderURI, const QString &mapsFileURI);
+    bool importTiles(QRPGProject *project, const QString &tilesFolderURI, const QString &tilesFileURI);
     void initMapsDir(const QDir &mapsDir);
     void initProjectFile(const QDir &projectDir, const QString &gameTitle, int tileSize);
-    void initProjectFromFile(QRPGDao::QRPGProject *project);
+    bool initProjectFromFile(QRPGDao::QRPGProject *project);
     void initTilesDir(const QDir &tilesDir);
 
     // QRPGDatabase interface

@@ -21,7 +21,7 @@ QRPGFileDao::QRPGFileDao()
 
 }
 
-void QRPGFileDao::importMaps(QRPGProject *project, const QString &mapsFolderURI, const QString &mapsFileURI)
+bool QRPGFileDao::importMaps(QRPGProject *project, const QString &mapsFolderURI, const QString &mapsFileURI)
 {
     // TODO: mapsfolder + / for sure!
     // get all maps
@@ -53,7 +53,7 @@ void QRPGFileDao::importMaps(QRPGProject *project, const QString &mapsFolderURI,
                         for (int x=0; x<tileXArray.count(); x++) {
                             int tileID = tileXArray.at(x).toInt(-1);
                             if (tileID >= 0 && project->tiles().contains(tileID)) {
-                                qDebug() << "layer " << layer << ": (" << x << "," << y << ") = " << tileID;
+//                                qDebug() << "layer " << layer << ": (" << x << "," << y << ") = " << tileID;
                                 newMap->setTile(layer, x, y, project->tiles().value(tileID));
                             }
                         }
@@ -64,15 +64,19 @@ void QRPGFileDao::importMaps(QRPGProject *project, const QString &mapsFolderURI,
                 mapFile.close();
             } else {
                 qWarning() << "Could not open map file!" << mapFile.fileName();
+                mapsFile.close();
+                return false;
             }
         }
         mapsFile.close();
     } else {
         qWarning() << "Could not open maps file!" << mapsFile.fileName();
+        return false;
     }
+    return true;
 }
 
-void QRPGFileDao::importTiles(QRPGProject *project, const QString &tilesFolderURI, const QString &tilesFileURI)
+bool QRPGFileDao::importTiles(QRPGProject *project, const QString &tilesFolderURI, const QString &tilesFileURI)
 {
     QFile tilesFile(tilesFileURI);
     if (tilesFile.open(QIODevice::ReadOnly)) {
@@ -95,8 +99,8 @@ void QRPGFileDao::importTiles(QRPGProject *project, const QString &tilesFolderUR
                 int y = jsonFrame["y"].toInt();
                 QPixmap spriteframe = spritesheet.copy(x, y, project->tileSize(), project->tileSize());
                 sprite->addSpriteFrame(spriteframe);
-                qDebug() << "creating spriteframe " << id << ": " << name << "(" << file << ": (" << x << "," << y << "))";
-                qDebug() << spriteframe;
+//                qDebug() << "creating spriteframe " << id << ": " << name << "(" << file << ": (" << x << "," << y << "))";
+//                qDebug() << spriteframe;
             }
             if (sprite->spriteFrames().count() > 1) {
                 sprite->setFps(jsonSprite.value("fps").toDouble(1.0));
@@ -109,7 +113,9 @@ void QRPGFileDao::importTiles(QRPGProject *project, const QString &tilesFolderUR
         tilesFile.close();
     } else {
         qWarning() << "Could not open tiles file!" << tilesFile.fileName();
+        return false;
     }
+    return true;
 }
 
 void QRPGFileDao::initMapsDir(const QDir &mapsDir)
@@ -161,8 +167,9 @@ void QRPGFileDao::initProjectFile(const QDir &projectDir, const QString &gameTit
     }
 }
 
-void QRPGFileDao::initProjectFromFile(QRPGProject *project)
+bool QRPGFileDao::initProjectFromFile(QRPGProject *project)
 {
+    // TODO: value checks!
     qDebug() << "init project from project file";
     if (project != NULL) {
         QString projDirURI = project->getProjectFolderURI();
@@ -198,17 +205,25 @@ void QRPGFileDao::initProjectFromFile(QRPGProject *project)
             qDebug() << "tiles file:" << tilesFileURI;
             qDebug() << "maps folder:" << mapsFolderURI;
             qDebug() << "maps file:" << mapsFileURI;
+
+            bool noError;
             // import sprites & tiles
-            importTiles(project, tilesFolderURI, tilesFileURI);
+            noError = importTiles(project, tilesFolderURI, tilesFileURI);
+            if (!noError) return false;
 
             // import maps
-            importMaps(project, mapsFolderURI, mapsFileURI);
+            noError = importMaps(project, mapsFolderURI, mapsFileURI);
+            if (!noError) return false;
 
             projectFile.close();
         } else {
             qWarning() << "Could not open project file!" << projectFile.fileName();
+            return false;
         }
+    } else {
+        return false;
     }
+    return true;
 }
 
 void QRPGFileDao::initTilesDir(const QDir &tilesDir)
@@ -314,7 +329,9 @@ QRPGProject *QRPGFileDao::openProjectDir(const QString &projectDirURI)
         qDebug() << "project title:" << projectTitle;
         proj = this->newProject(projectDirURI, projectTitle, "gameTitle");
         // project-file openen
-        initProjectFromFile(proj);
+        if (!initProjectFromFile(proj)) {
+            proj = NULL;
+        }
     } else {
         qDebug() << "project folder " << projectDirURI << " does not exist!";
     }
