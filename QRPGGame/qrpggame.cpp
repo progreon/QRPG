@@ -4,7 +4,7 @@
 #include <QDateTime>
 #include "model/qrpgsprite.h"
 
-QRPG::QRPGGame::QRPGGame(QRPGScreen *screen)
+QRPG::QRPGGame::QRPGGame(QRPGScreen *screen, const QRPGDao::QRPGProject *project)
     : mapLoader(this)
 {
     this->_tps = 60.0;
@@ -13,6 +13,13 @@ QRPG::QRPGGame::QRPGGame(QRPGScreen *screen)
     currProject = NULL;
     running = false;
     connect(this, SIGNAL(render()), screen, SLOT(doRender()));
+    qDebug() << "opening project ...";
+    if (project != NULL) {
+        currProject = project;
+        loadSprites(currProject);
+//        openMap(0);
+    }
+    qDebug() << "done opening project";
 }
 
 QRPG::QRPGGame::~QRPGGame()
@@ -38,21 +45,9 @@ void QRPG::QRPGGame::keyReleased(int key)
     inputMutex.unlock();
 }
 
-void QRPG::QRPGGame::openGameProject(const QRPGDao::QRPGProject *project)
-{
-    // TODO !!
-    qDebug() << "opening project ...";
-    if (project != NULL) {
-        currProject = project;
-        loadSprites(currProject);
-//        openMap(0);
-    }
-    qDebug() << "done opening project";
-}
-
 void QRPG::QRPGGame::openMap(int mapID)
 {
-    if (currProject != NULL) {
+    if (currProject != NULL && screen != NULL) {
         MapScene *newMapScene = mapLoader.newMap(currProject->maps().value(mapID));
         MapScene *tempMap = map;
         map = newMapScene;

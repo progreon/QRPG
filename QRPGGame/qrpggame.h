@@ -19,12 +19,11 @@ class QRPGGame : public QObject
 {
     Q_OBJECT
 public:
-    explicit QRPGGame(QRPGScreen *screen);
+    explicit QRPGGame(QRPGScreen *screen, const QRPGDao::QRPGProject *project);
     ~QRPGGame();
     bool isRunning() const {return running;}
     void keyPressed(int key);
     void keyReleased(int key);
-    void openGameProject(const QRPGDao::QRPGProject *project);
     void openMap(int mapID);
     void setupThread(QThread *gameThread);
     Sprite *sprite(int ID) const;

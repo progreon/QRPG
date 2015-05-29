@@ -4,21 +4,17 @@
 #include "qrpgdatabase.h"
 #include "model/qrpgproject.h"
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(const QRPGDao::QRPGProject *project, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     ui->mainToolBar->hide();
     ui->statusBar->hide();
-    game = NULL;
     screen = new QRPG::QRPGScreen(this);
-    game = new QRPG::QRPGGame(screen);
     this->setCentralWidget(screen);
+    game = new QRPG::QRPGGame(screen, project);
 //    connect(game, SIGNAL(render()), screen, SLOT(doRender()));
-    QRPGDao::QRPGDatabase *dao = QRPGDao::newDao();
-    QRPGDao::QRPGProject *dummyProject = dao->openDummyProject();
-    game->openGameProject(dummyProject);
     game->setupThread(&gameThread);
     game->moveToThread(&gameThread);
 }
@@ -33,7 +29,6 @@ void MainWindow::startGame()
 {
     gameThread.start();
     game->openMap(0);
-
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *ke)
