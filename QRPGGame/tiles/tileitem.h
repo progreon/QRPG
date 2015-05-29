@@ -11,14 +11,13 @@ namespace QRPG {
 class TileItem : public GraphicsItem
 {
 public:
-    TileItem(Sprite *sprite, QObject *parent = 0);
+    TileItem(Sprite *sprite, int tileSize, QObject *parent = 0);
     ~TileItem();
-    int getTileSize() const;
+    int tileSize() const;
 
 private:
-    int tileSize;
-
     Sprite *sprite;
+    int _tileSize;
 
     // GraphicsItem interface
 public:

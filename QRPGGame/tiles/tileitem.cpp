@@ -1,11 +1,12 @@
 #include "tiles/tileitem.h"
 #include <QImage>
 
-QRPG::TileItem::TileItem(QRPG::Sprite *sprite, QObject *parent)
+QRPG::TileItem::TileItem(QRPG::Sprite *sprite, int tileSize, QObject *parent)
     : GraphicsItem(parent)
     , sprite(sprite)
+    , _tileSize(tileSize)
 {
-    tileSize = sprite->pixmap()->width();
+
 }
 
 QRPG::TileItem::~TileItem()
@@ -13,14 +14,14 @@ QRPG::TileItem::~TileItem()
 
 }
 
-int QRPG::TileItem::getTileSize() const
+int QRPG::TileItem::tileSize() const
 {
-    return tileSize;
+    return _tileSize;
 }
 
 QRectF QRPG::TileItem::boundingRect() const
 {
-    return QRectF(0, 0, tileSize, tileSize);
+    return QRectF(0, 0, _tileSize, _tileSize);
 }
 
 const QPixmap *QRPG::TileItem::pixmap() const

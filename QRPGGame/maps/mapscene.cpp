@@ -33,7 +33,7 @@ void QRPG::MapScene::setTileItem(int x, int y, QRPG::TileItem *tile)
     if (x >= 0 && x < width && y >= 0 && y < height) {
 //        deleteGraphicsItem(tiles[x][y]);
 //        delete tiles[x][y];
-        tile->setPos(x * 8, y * 8);
+        tile->setPos(x * tile->tileSize(), y * tile->tileSize());
         tiles[x][y] = tile;
         addGraphicsItem(tile);
     }
